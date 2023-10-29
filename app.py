@@ -26,18 +26,44 @@ def show_billing():
     else:
         return redirect('/login')
 
-    total = ''
-    card = 0
-    money = 0
-    tabela = None
+    billing: list = None
+    """
+        Receive a list of amount of billing
+            {   
+                0 : money
+                1 : card
+                2 : total
+            }
+    """
+
+    items_production: list = None
+    """
+        Receive a list of products amounts
+            {
+                0 : garlic bread
+                1 : small_ball
+                2 : big_ball
+            }
+    """
+
+    items_usages = list
+    """
+        Receive a list of amount of usaged items
+        {
+            0: garlic bread
+            1: small_ball
+            2: big_ball
+            3: chessse
+        }
+    """
+
     store_name = None
-    usage = None
-    db = None
+
     data_to_chart = []
 
     if request.method == 'POST':
         date = request.form.get('date')
-        store = request.form.get('stores')
+        store = int(request.form.get('stores'))
 
         try:
             if date == '':
@@ -47,13 +73,12 @@ def show_billing():
                 total = 'voce nao selecionou a loja'
 
             else:
-                get_total = get_billing(int(store), date)
-                get_production_info = get_production(int(store), date)
-                get_usage_info = get_usage(int(store), date)
+
+                billing = get_billing(store, date)[0]['billing']
+
+                items_production = get_production(store, date)[0]['production']
 
                 total = f"{get_total['TOTAL']:.2f}"
-                card = get_total['CARD']
-                money = get_total['MONEY']
                 store_name = define_store(int(store))
 
                 db = get_usage_info
@@ -122,7 +147,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    status = 'asd'
+    status = ''
 
     if request.method == 'POST':
 

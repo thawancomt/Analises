@@ -2,61 +2,73 @@
 from tinydb import Query, TinyDB
 
 db = TinyDB('databases/dados.json')
-store_list = {3: 'Colombo',
-              5: 'Odivelas',
-              11: 'Campo de Ourique',
-              13: 'Coina',
-              25: 'Baixa Chiado'}
+
+store_dict = {
+    3: 'Colombo',
+    5: 'Odivelas',
+    11: 'Campo de Ourique',
+    13: 'Coina',
+    25: 'Baixa Chiado'
+}
 
 
-def get_billing(store, date):
-    billing = db.search((Query().store == store) &
-                        (Query().date == date))
-    return billing[0]['billing']
+class StoreAnalysis():
 
+    def __init__(self, store: int, date: str):
+        self.date = date
+        self.store = store
 
-def get_production(store, date):
-    production = db.search((Query().store == store) &
-                           (Query().date == date))
-    return production[0]['production']
+    def get_billing(self) -> list:  # OK
+        billing = db.search(
+            (Query().store == self.store) &
+            (Query().date == self.date)
+        )
+        return billing
 
+    def get_production(self) -> list:  # OK
+        production = db.search(
+            (Query().store == self.store) &
+            (Query().date == self.date)
+        )
+        return production
 
-def get_usage(store, date):
-    usage = db.search((Query().store == store) &
-                      (Query().date == date))
-    return usage
+    def get_usage(self) -> list:  # OK
+        usage = db.search(
+            (Query().store == self.store) &
+            (Query().date == self.date)
+        )
+        return usage
 
+    def define_store(self) -> str:  # OK
+        return store_dict[self.store]
 
-def define_store(store):
-    stores = {5: 'Odivelas',
-              3: 'Colombo',
-              11: 'Campo de Ourique'}
-    return stores[store]
+    def increment_date(self, day: int) -> str:  # OK
+        from datetime import datetime, timedelta
 
+        try:
+            date = datetime.strptime(self.date, '%Y-%m-%d').date()
 
-def increment_date(store, date_str):
-    import datetime
-    try:
-        date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-        incremented_date = str(date + datetime.timedelta(days=store))
-        return incremented_date
-    except ValueError:
-        return None
+            incremented_date = str(date + timedelta(days=day))
 
+            return incremented_date
 
-def create_data_to_chart_ball_usage(store, date):
+        except ValueError:
+            raise ('Invalid date')
 
-    before_week = []
-    big_balls = []
-    small_balls = []
-    for day in range(-7, 0):
-        before_week.append(increment_date(day, date))
+    def create_data_to_ball_usage_chart(self, length):  # OK
 
-    for day in before_week:
-        big_balls.append(get_usage(store, day)[0]['usage']['BIG_BALL'])
-        small_balls.append(get_usage(store, day)[0]['usage']['SMALL_BALL'])
+        before_week: list = []
+        big_balls: list = []
+        small_balls: list = []
 
-    return [before_week, [big_balls, small_balls]]
+        for day in range(length, 0):
+            before_week.append(self.increment_date(day))
 
+        for day in before_week:
+            self.date = day
+            big_balls.append(self.get_usage()
+                             [0]['usage']['BIG_BALL'])
+            small_balls.append(self.get_usage()
+                               [0]['usage']['SMALL_BALL'])
 
-print(create_data_to_chart_ball_usage(5, '2022-05-09'))
+        return [before_week, [big_balls, small_balls]]
