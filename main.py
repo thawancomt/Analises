@@ -15,7 +15,7 @@ loged = False
 
 @app.route('/')
 def home():
-    return render_template('html/homepage.html')
+    return redirect('login')
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
@@ -33,7 +33,7 @@ def show_billing():
     store_name = None
     usage = None
     db = None
-    before_and_after = None
+    data_to_chart = []
 
     if request.method == 'POST':
         date = request.form.get('date')
@@ -60,17 +60,17 @@ def show_billing():
 
                 usage = get_usage_info[0]['usage']
 
-                before_and_after = increment_date(int(store), date)
-
                 tabela = get_production_info
+
+                data_to_chart = create_data_to_chart_ball_usage(
+                    int(store), date)
 
         except:
 
             total = 'Valor nao encontrado no banco de dados'
 
     return render_template('html/faturamento.html', billing=total, billing_card=card, billing_money=money,
-                           tabela=tabela, store=store_name, usage=usage, db=db, store_list=store_list,
-                           usage_ballbna=before_and_after)
+                           tabela=tabela, store=store_name, usage=usage, db=db, store_list=store_list, labels2=data_to_chart)
 
 
 @app.route('/login',  methods=['GET', 'POST'])

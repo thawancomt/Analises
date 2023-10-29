@@ -38,12 +38,25 @@ def increment_date(store, date_str):
     import datetime
     try:
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-        after_date = str(date + datetime.timedelta(days=1))
-        before_date = str(date - datetime.timedelta(days=1))
-
-        after = get_usage(store, after_date)
-        before = get_usage(store, before_date)
-
-        return [after[0]['usage']['BIG_BALL'], before[0]['usage']['BIG_BALL']]
+        incremented_date = str(date + datetime.timedelta(days=store))
+        return incremented_date
     except ValueError:
         return None
+
+
+def create_data_to_chart_ball_usage(store, date):
+
+    before_week = []
+    big_balls = []
+    small_balls = []
+    for day in range(-7, 0):
+        before_week.append(increment_date(day, date))
+
+    for day in before_week:
+        big_balls.append(get_usage(store, day)[0]['usage']['BIG_BALL'])
+        small_balls.append(get_usage(store, day)[0]['usage']['SMALL_BALL'])
+
+    return [before_week, [big_balls, small_balls]]
+
+
+print(create_data_to_chart_ball_usage(5, '2022-05-09'))

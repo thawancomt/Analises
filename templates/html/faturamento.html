@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mr Pizza Analisys</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Mr Pizza Analises</title>
+<link rel="stylesheet" href="/static/css/style.css">
+    
 </head>
 <body>
-    
+
     <footer>
         <div id="title-page">
             <h1> Analise {{store}}</h1>
@@ -117,12 +118,25 @@
                 <div class="big-ball-card">
                     <h1">{{usage['BIG_BALL']}}</h1>
                 </div>
+                
             </main>
+            
+
+            
+        </div>
+        <div>
+            <canvas id="myChart" style="display: flex;" width="300px" height="300px"></canvas>
         </div>
         
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        
+        <script>
+            /* Aqui criei uma variavel no js para passar minha lista de valores para o grafico*/
+            var labels = {{ labels2 | tojson }};
+        </script>
+        <script src="static/js/graphics.js"></script>
     </div>
-
     
-    <script src="/static/js/js.js"></script>
 </body>
 </html>
