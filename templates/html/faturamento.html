@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Pizza Analisys</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    
+    <footer>
+        <div id="title-page">
+            <h1> Analise {{store}}</h1>
+        </div>
+    </footer>
+
+    <div class="info-card " style="gap: 10px;">
+        
+        <a href="#faturamento">faturamento</a>
+        <a href="#producao">Producão</a>
+        <a href="#usage">Uso de Bolas</a>
+    </div>
+
+    <div class="billing-card" id="faturamento">
+
+        <div class="billing-info">
+            <div class="billing-cards">
+                <span> Money: </span>
+                <h3>{{billing_money}}</h3>
+            </div>
+            <div class="billing-cards">
+                <span>Card: </span>
+                <h3>{{billing_card}}</h3>
+            </div>
+    </div>
+
+    <main class="billing-total">
+        <span>Total: </span>
+        <h1 id="total-value">{{billing}}</h1>  
+    </main>
+
+    <div class="fomr-data">
+    <form method="POST" action="/faturamento">
+        <div class="date-select">
+            <label for="date">Data:</label>
+            <input type="date" name="date" id="date" value="2022-04-09">
+        </div>
+
+        <div>
+            <label for="stores">Qual loja:</label>
+            <select name="stores" id="stores">
+                {% for store_value, store_name in store_list.items() %}
+                <option value="{{ store_value }}">{{ store_name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Enviar" id="btn-submit">
+        </div>
+    </form>
+</div>
+
+
+    </div>
+
+    <div class="ball-dashboard" id="producao">
+        <div class="production-title">
+            <h1 >Producão {{store}}</h1>
+        </div>
+        
+        <div class="production-card">
+            
+
+            <div class="production-cards">
+                <div class="info-card">
+                    <span>Pão de Alho:</span>
+                    <h1>{{tabela['GARLIC_BREAD']}}</h1>
+                </div>
+                
+                <div class="info-card">
+                    <span>Bola Pequena:</span>
+                    <h1>{{tabela['SMALL_BALL']}}</h1>
+                </div>
+            </div>
+
+        </div>
+        <div class="big-ball-production">
+            <span>Bola Grande:</span>
+            <h1>{{tabela['BIG_BALL']}}</h1>
+        </div> 
+    </div>
+    
+    <footer class="usage-title">
+        <span>Uso de Bolas: {{store}}</span>
+    </footer>
+    <div class="ball-usage-dashboard" id="usage">
+
+
+        <aside>
+            <div class="usage-card">
+                <div class="usage-cards">
+                    <span>Bola Pequena: </span>
+                    <h2>{{usage['SMALL_BALL']}}</h2>
+                </div>
+
+                <div class="usage-cards">
+                    <span>Pao de Alho: </span>
+                    <h2>{{usage['GARLIC_BREAD']}}</h2>
+                </div>
+                
+            </div>
+        </aside>
+        <div class="big-ball-usage">
+            <main class="big-ball-usage-card">
+                <div>
+                    <span>Bola Grande:</span>
+                    
+                </div>
+                <div class="big-ball-card">
+                    <h1">{{usage['BIG_BALL']}}</h1>
+                </div>
+            </main>
+        </div>
+        
+    </div>
+
+    
+    <script src="/static/js/js.js"></script>
+</body>
+</html>
