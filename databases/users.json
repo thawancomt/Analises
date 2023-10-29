@@ -1,24 +1,8 @@
 {
     "_default": {
-        "1": {
-            "username": "thawancomt@gmail.com",
-            "password": "thawansdas"
-        },
         "2": {
-            "username": "thawancomt@gmail.com",
-            "password": "12345"
-        },
-        "3": {
-            "username": "thawancomt@gmail.com",
-            "password": "12345"
-        },
-        "4": {
-            "username": "thawancomt@gmail.com",
-            "password": "12345"
-        },
-        "5": {
-            "username": "thawancomt@gmail.com",
-            "password": "12345"
+            "email": "a@das",
+            "password": ""
         }
     }
 }

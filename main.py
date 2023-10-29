@@ -2,17 +2,15 @@ from tinydb import TinyDB, Query
 from flask import Flask, render_template, request, redirect
 from flask_login import login_required, login_user, logout_user, LoginManager
 from functions import *
-from teste import users
+from users_manager import users
 
 app = Flask(__name__)
 
-db = TinyDB('databases/dados.json')
+db = TinyDB('databases/dados.json', indent=4)
 
 usersdb = TinyDB('databases/users.json', indent=4)
 
 loged = False
-
-session = {}
 
 
 @app.route('/')
@@ -77,10 +75,10 @@ def show_billing():
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
-    from teste import users
+    from users_manager import users
 
     global loged
-    status = 'Log In'
+    status = ''
 
     def check_login(email, password):
         if usersdb.search((Query().email == email) &
@@ -118,14 +116,13 @@ def login():
 
         except:
             status = 'User not found'
-            pass
 
     return render_template('html/login.html', status=status)
-    pass
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    status = 'asd'
 
     if request.method == 'POST':
 
@@ -136,7 +133,11 @@ def register():
         object_user = users(email, password)
         object_user.create_user(usersdb, email, password)
 
-    return render_template('html/register.html')
+        status = object_user.status
+
+        return render_template('html/register.html', status=status)
+
+    return render_template('html/register.html', status=status)
 
 
 app.run(debug=True, host='0.0.0.0', port=5000)

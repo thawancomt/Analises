@@ -3,14 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registe-se</title>
+    <link rel="stylesheet" href="/static/css/login.css">
 </head>
 <body>
-    <form action="/register" method="POST">
-        <input type="email" name="email" placeholder="Your email">
-        <input type="password" name="password" placeholder="Your password">
-        <input type="submit" value="Create">
-    </form>
+    <div class="container">
+
+        <div class="register-conteiner">
+            
+            <form action="/register" method="POST" class="register-card">
+                <h1>Faça seu registo</h1>
+                <div class="line-input">
+                    <input type="email" name="email" class="input-card" placeholder="Digite seu usuario" required>
+                </div>
+                <div class="line-input">
+                    <input type="password" name="password" class="input-card" placeholder="Digite sua senha" required>
+                </div>
+                <input type="submit" name="login" class="btn-submit" value="Registrar">
+
+                
+                
+            </form>
+            <div class="register-report">
+                <h1>Apenas o admin pode fazer cadastros</h1>
+                {% if (status == True) %}
+                    <a href="login">This User already exist, click here to login</a>
+                {% endif %}
+
+                {% if (status == False) %}
+                    <a href="login">Usuario registado com sucesso</a>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
     
 </body>
 </html>

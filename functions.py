@@ -1,5 +1,7 @@
 """Some methods needs conection with the modules imported from main"""
+from tinydb import Query, TinyDB
 
+db = TinyDB('databases/dados.json')
 store_list = {3: 'Colombo',
               5: 'Odivelas',
               11: 'Campo de Ourique',
@@ -8,7 +10,6 @@ store_list = {3: 'Colombo',
 
 
 def get_billing(store, date):
-    print(store, date)
     billing = db.search((Query().store == store) &
                         (Query().date == date))
     return billing[0]['billing']

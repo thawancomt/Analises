@@ -3,17 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/login.css">
 </head>
 <body>
+    <div class="container">
 
-    <form action="/login" method="POST">
-        <input type="email" name="email">
-        <input type="password" name="password">
-        <input type="submit" name="login">
-    </form>
+        <div class="login-container">
+            
+            <form action="/login" method="POST" class="login-card">
+                <h1>insira os dados para login</h1>
+                <div class="line-input">
+                    <input type="email" name="email" class="input-card" placeholder="Digite seu usuario">
+                </div>
+                <div class="line-input">
+                    <input type="password" name="password" class="input-card" placeholder="Digite sua senha">
+                </div>
+                <input type="submit" name="login" class="btn-submit" value="Entrar">
+                
+                <div class="login-report">
+                    {% if (status == 'User not found') %}
+                    <span>Usuario não encontrado<a href="register"><br>Resgiste-se aqui</a></span>
+                    {% else %}
+                    <span>{{status}}</span>
+                    {% endif %}
+    
+                </div>
+                
+                
+            </form>
+            
 
-    <span>{{status}}</span>
+        </div>
+
+    </div>
+
     
 </body>
 </html>

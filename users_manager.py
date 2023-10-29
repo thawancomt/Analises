@@ -2,6 +2,8 @@ from tinydb import Query
 
 
 class users():
+    from flask import redirect
+
     def __init__(self, username: str, password: str, ip: str = None, status: bool = False):
         self.username = username
         self.password = password
@@ -10,19 +12,19 @@ class users():
 
     def check_user_exists(self, database, username):
         result = database.search(Query().email == username)
-        print(result)
+
         if result:
             return True
 
-    def create_user(self, database, username, password):
+    def create_user(self, db, username, password):
+        if not self.check_user_exists(db, username):
 
-        if not self.check_user_exists(database, username):
-
-            database.insert({'username': username,
-                            'password': password})
+            if self.username != '' and self.password != '':
+                db.insert({'email': username,
+                           'password': password})
 
         else:
-            return redirect('login')
+            self.login()
 
     def login(self):
         self.status = True
