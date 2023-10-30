@@ -1,7 +1,7 @@
 from tinydb import TinyDB, Query
 from flask import Flask, render_template, request, redirect
 from flask_login import login_required, login_user, logout_user, LoginManager
-from functions import *
+from functions import StoreAnalysis, store_dict
 from users_manager import users
 
 app = Flask(__name__)
@@ -9,6 +9,7 @@ app = Flask(__name__)
 db = TinyDB('databases/dados.json', indent=4)
 
 usersdb = TinyDB('databases/users.json', indent=4)
+
 
 loged = False
 
@@ -46,7 +47,7 @@ def show_billing():
             }
     """
 
-    items_usages = list
+    items_usage = list
     """
         Receive a list of amount of usaged items
         {
@@ -62,40 +63,33 @@ def show_billing():
     data_to_chart = []
 
     if request.method == 'POST':
+
         date = request.form.get('date')
         store = int(request.form.get('stores'))
 
         try:
-            if date == '':
-                total = 'voce nao selecionou data'
+            print(date, store)
 
-            elif store == '0':
-                total = 'voce nao selecionou a loja'
+            analisy = StoreAnalysis(store, date)
 
-            else:
+            store_name = analisy.define_store()
 
-                billing = get_billing(store, date)[0]['billing']
+            billing = analisy.get_billing()
 
-                items_production = get_production(store, date)[0]['production']
+            items_production = analisy.get_production()
 
-                total = f"{get_total['TOTAL']:.2f}"
-                store_name = define_store(int(store))
+            items_usage = analisy.get_usage()
 
-                db = get_usage_info
+            print(billing)
 
-                usage = get_usage_info[0]['usage']
-
-                tabela = get_production_info
-
-                data_to_chart = create_data_to_chart_ball_usage(
-                    int(store), date)
+            data_to_chart = analisy.create_data_to_ball_usage_chart(-12)
 
         except:
 
             total = 'Valor nao encontrado no banco de dados'
 
-    return render_template('html/faturamento.html', billing=total, billing_card=card, billing_money=money,
-                           tabela=tabela, store=store_name, usage=usage, db=db, store_list=store_list, labels2=data_to_chart)
+    return render_template('html/faturamento.html', store=store_name, billing=billing, production=items_production, usage_balls=items_usage,
+                           usage_chart=data_to_chart, store_dict=store_dict)
 
 
 @app.route('/login',  methods=['GET', 'POST'])

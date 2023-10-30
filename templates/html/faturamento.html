@@ -27,17 +27,17 @@
         <div class="billing-info">
             <div class="billing-cards">
                 <span> Money: </span>
-                <h3>{{billing_money}}</h3>
+                <h3>{{billing['MONEY']}}</h3>
             </div>
             <div class="billing-cards">
                 <span>Card: </span>
-                <h3>{{billing_card}}</h3>
+                <h3>{{billing['CARD']}}</h3>
             </div>
     </div>
 
     <main class="billing-total">
         <span>Total: </span>
-        <h1 id="total-value">{{billing}}</h1>  
+        <h1 id="total-value">{{billing['TOTAL']}}</h1>  
     </main>
 
     <div class="fomr-data">
@@ -50,8 +50,8 @@
         <div>
             <label for="stores">Qual loja:</label>
             <select name="stores" id="stores">
-                {% for store_value, store_name in store_list.items() %}
-                <option value="{{ store_value }}">{{ store_name }}</option>
+                {% for store_id, store_name in store_dict.items() %}
+                <option value="{{ store_id }}">{{ store_name }}</option>
                 {% endfor %}
             </select>
             <input type="submit" value="Enviar" id="btn-submit">
@@ -73,19 +73,19 @@
             <div class="production-cards">
                 <div class="info-card">
                     <span>Pão de Alho:</span>
-                    <h1>{{tabela['GARLIC_BREAD']}}</h1>
+                    <h1>{{ production['GARLIC_BREAD'] }}</h1>
                 </div>
                 
                 <div class="info-card">
                     <span>Bola Pequena:</span>
-                    <h1>{{tabela['SMALL_BALL']}}</h1>
+                    <h1>{{ production['SMALL_BALL'] }}</h1>
                 </div>
             </div>
 
         </div>
         <div class="big-ball-production">
             <span>Bola Grande:</span>
-            <h1>{{tabela['BIG_BALL']}}</h1>
+            <h1>{{ production['BIG_BALL'] }}</h1>
         </div> 
     </div>
     
@@ -99,12 +99,12 @@
             <div class="usage-card">
                 <div class="usage-cards">
                     <span>Bola Pequena: </span>
-                    <h2>{{usage['SMALL_BALL']}}</h2>
+                    <h2>{{usage_balls['SMALL_BALL']}}</h2>
                 </div>
 
                 <div class="usage-cards">
                     <span>Pao de Alho: </span>
-                    <h2>{{usage['GARLIC_BREAD']}}</h2>
+                    <h2>{{usage_balls['GARLIC_BREAD']}}</h2>
                 </div>
                 
             </div>
@@ -116,7 +116,7 @@
                     
                 </div>
                 <div class="big-ball-card">
-                    <h1">{{usage['BIG_BALL']}}</h1>
+                    <h1">{{usage_balls['BIG_BALL']}}</h1>
                 </div>
                 
             </main>
@@ -133,7 +133,7 @@
         
         <script>
             /* Aqui criei uma variavel no js para passar minha lista de valores para o grafico*/
-            var labels = {{ labels2 | tojson }};
+            var labels = {{ usage_chart | tojson }};
         </script>
         <script src="static/js/graphics.js"></script>
     </div>

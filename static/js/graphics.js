@@ -1,4 +1,4 @@
-alert('test');
+
 
 const usageBigBall = document.getElementById('myChart');
 
