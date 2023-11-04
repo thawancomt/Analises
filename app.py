@@ -1,6 +1,5 @@
 from tinydb import TinyDB, Query
 from flask import Flask, render_template, request, redirect
-from flask_login import login_required, login_user, logout_user, LoginManager
 from functions import StoreAnalysis, store_dict
 from users_manager import users
 
@@ -88,12 +87,18 @@ def show_billing():
 
             total = 'Valor nao encontrado no banco de dados'
 
-    return render_template('html/faturamento.html', store=store_name, billing=billing, production=items_production, usage_balls=items_usage,
-                           usage_chart=data_to_chart, store_dict=store_dict)
+    return render_template('html/faturamento.html',
+                           store=store_name,
+                           billing=billing,
+                           production=items_production,
+                           usage_balls=items_usage,
+                           usage_chart=data_to_chart,
+                           store_dict=store_dict)
 
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
+
     from users_manager import users
 
     global loged
@@ -142,21 +147,31 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     status = ''
+    password_length = 0
 
     if request.method == 'POST':
 
         email = request.form.get('email')
         password = request.form.get('password')
 
+        if 'isAdmin' in request.form:
+            admin = True
+        else:
+            admin = False
+
         # Instacia o usuario e chama a funcao criar user da classe users
-        object_user = users(email, password)
+        object_user = users(email, password, admin=admin)
         object_user.create_user(usersdb, email, password)
 
         status = object_user.status
 
-        return render_template('html/register.html', status=status)
+        return render_template('html/register.html',
+                               status=status,
+                               password_length=len(password))
 
-    return render_template('html/register.html', status=status)
+    return render_template('html/register.html',
+                           status=status,
+                           password_length=password_length)
 
 
 app.run(debug=True, host='0.0.0.0', port=5000)

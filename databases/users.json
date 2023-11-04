@@ -1,16 +1,14 @@
 {
     "_default": {
-        "2": {
-            "email": "a@das",
-            "password": ""
-        },
-        "3": {
+        "1": {
             "email": "thawancomt@gmail.com",
-            "password": "thawancomT"
+            "password": "thawancomT",
+            "admin": false
         },
-        "4": {
-            "email": "gekyumethfdfdawan@gmail.com",
-            "password": "bhhggfgffgf"
+        "2": {
+            "email": "thawancomt@gmail.com2",
+            "password": "thawancomT",
+            "admin": true
         }
     }
 }

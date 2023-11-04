@@ -19,7 +19,12 @@
                 <div class="line-input">
                     <input type="password" name="password" class="input-card" placeholder="Digite sua senha" required>
                 </div>
-                <input type="submit" name="login" class="btn-submit" value="Registrar">
+
+                <div class="check-box">
+                    <label for="isAdmin">is it user Admin?</label>
+                    <input type="checkbox" name="isAdmin" id="isAdmin">
+                </div>
+                <input type="submit" name="login" class="btn-submit" value="Create">
 
                 
                 
@@ -28,6 +33,11 @@
                 <h1>Apenas o admin pode fazer cadastros</h1>
                 {% if (status == True) %}
                     <a href="login">This User already exist, click here to login</a>
+                {% endif %}
+
+                {% if (password_length  <= 7) and not (password_length == 0) %}
+                    <a href="register">Password length too short</a>
+                
                 {% endif %}
 
                 {% if (status == False) %}
