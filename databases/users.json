@@ -4,13 +4,15 @@
             "username": "Thawan Henrique",
             "email": "thawancomt@gmail.com",
             "password": "Dez1633#",
-            "admin": false
+            "admin": false,
+            "last_login": "2023-11-06"
         },
         "3": {
             "username": "Luis doze",
             "email": "luis21@gmail.com",
             "password": "luisdodoce",
-            "admin": true
+            "admin": true,
+            "last_login": "2023-11-06"
         }
     }
 }

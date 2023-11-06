@@ -1,4 +1,5 @@
 from tinydb import Query
+from datetime import datetime, date
 
 
 class Users():
@@ -17,6 +18,7 @@ class Users():
         self.status = status
         self.admin = admin
         self.database = database
+        self.last_login = date.today()
 
     def check_user_exists(self):
         result = self.database.search((Query().email == self.email))
@@ -31,7 +33,8 @@ class Users():
                 self.database.insert({'username': username,
                                       'email': email,
                                       'password': password,
-                                      'admin': self.admin})
+                                      'admin': self.admin,
+                                      'last_login': self.last_login})
 
         else:
             self.login()
@@ -46,6 +49,11 @@ class Users():
             else:
                 return 'Invalid password'
 
+        def update_last_login():
+
+            self.database.update(
+                {'last_login': self.last_login}, (Query().email == self.email))
+
         if user_data:
             result = validate_password(user_data, self.password)
 
@@ -53,6 +61,8 @@ class Users():
                 self.username = user_data['username']
                 self.admin = user_data['admin']
                 self.status = 'loged'
+                self.last_login = str(date.today())
+                update_last_login()
 
             elif result == 'Invalid password':
                 self.status = result

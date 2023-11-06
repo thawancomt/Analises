@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, redirect
 from functions import StoreAnalysis, store_dict
 from users_manager import Users
 
+from datetime import datetime
+
 app = Flask(__name__)
 
 db = TinyDB('databases/dados.json', indent=4)
@@ -10,7 +12,7 @@ db = TinyDB('databases/dados.json', indent=4)
 usersdb = TinyDB('databases/users.json', indent=4)
 
 
-#About session info
+# About session info
 session = {
     'username': '',
     'loged': False,
@@ -27,9 +29,7 @@ def update_sesion_info(username, status):
 
 @app.route('/homepage')
 def home():
-   
-    return render_template('html/homepage.html',
-                           current_user=current_user)
+    return render_template('html/homepage.html', current_user=session['username'])
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
@@ -110,7 +110,7 @@ def show_billing():
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
     global session
-
+    status = ''
     if request.method == 'POST':
 
         email = request.form.get('email')
@@ -118,6 +118,8 @@ def login():
 
         object_user = Users(email=email, password=pwd, database=usersdb)
         object_user.login()
+
+        status = object_user.status
 
         if object_user.status == 'loged':
             update_sesion_info(object_user.username, True)
@@ -146,6 +148,7 @@ def register():
         # the next objetive is make register be a login required function
         object_user = Users(username=username, email=email,
                             password=password, admin=admin)
+
         object_user.create_user(usersdb, username, email, password)
 
         status = object_user.status
@@ -162,7 +165,7 @@ def register():
 @app.route('/users')
 def users():
     user_list = usersdb.search(Query().email != '')
-    return render_template('/html/users.html', users=user_list, current_user=current_user)
+    return render_template('/html/users.html', users=user_list, current_user=session['username'])
 
 
 @app.route('/users/<username>')

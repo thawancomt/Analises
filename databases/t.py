@@ -1,14 +1,8 @@
-session = {
-    'username': '',
-    'loged': False,
-}
+from tinydb import TinyDB, Query
 
-print(session)
+usersdb = TinyDB('databases/users.json', indent=4)
 
-session.update({
-    'username': 'tt',
-    'loged': True,
-})
+result = usersdb.search((Query().email == 'thawancomt@gmail.com'))
 
 
-print(session)
+usersdb.update({'last_login': 2}, Query().email == 'thawancomt@gmail.com')
