@@ -1,7 +1,7 @@
 from tinydb import TinyDB, Query
 from flask import Flask, render_template, request, redirect
 from functions import StoreAnalysis, store_dict
-from users_manager import users
+from users_manager import Users
 
 app = Flask(__name__)
 
@@ -12,10 +12,14 @@ usersdb = TinyDB('databases/users.json', indent=4)
 
 loged = False
 
+current_user = ''
 
-@app.route('/')
+
+@app.route('/homepage')
 def home():
-    return redirect('login')
+    username = ''
+    return render_template('html/homepage.html',
+                           current_user=current_user)
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
@@ -46,7 +50,7 @@ def show_billing():
             }
     """
 
-    items_usage = list
+    items_usage = list = None
     """
         Receive a list of amount of usaged items
         {
@@ -67,8 +71,6 @@ def show_billing():
         store = int(request.form.get('stores'))
 
         try:
-            print(date, store)
-
             analisy = StoreAnalysis(store, date)
 
             store_name = analisy.define_store()
@@ -79,9 +81,7 @@ def show_billing():
 
             items_usage = analisy.get_usage()
 
-            print(billing)
-
-            data_to_chart = analisy.create_data_to_ball_usage_chart(-12)
+            data_to_chart = analisy.create_data_to_ball_usage_chart(-7)
 
         except:
 
@@ -98,48 +98,26 @@ def show_billing():
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
-
-    from users_manager import users
-
+    global current_user
     global loged
     status = ''
-
-    def check_login(email, password):
-        if usersdb.search((Query().email == email) &
-                          (Query().password == password)):
-            return True
-
-        elif usersdb.search(Query().email == email)[0]['password'] != password:
-            return False
-
-        else:
-            return 'user not found'
 
     if request.method == 'POST':
 
         email = request.form.get('email')
-        password = request.form.get('password')
-        ip = request.remote_addr
+        pwd = request.form.get('password')
 
-        try:
+        if usersdb.search(
+            (Query().email == email) &
+            (Query().password == pwd)
+        ):
+            loged = True
+            current_user = usersdb.search(Query().email == email)[
+                0]['username']
+            return redirect('faturamento')
 
-            result = check_login(email, password)
-
-            if result:
-
-                loged = True
-                ip = request.remote_addr
-                print('Your IP is', ip)
-                return redirect('faturamento')
-
-            elif not result:
-                status = 'The Password is invalid'
-
-            elif result == 'user not found':
-                status = 'User Not Found'
-
-        except:
-            status = 'User not found'
+        else:
+            return redirect('users')
 
     return render_template('html/login.html', status=status)
 
@@ -147,10 +125,11 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     status = ''
-    password_length = 0
+    password = ''
 
     if request.method == 'POST':
 
+        username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
 
@@ -160,18 +139,31 @@ def register():
             admin = False
 
         # Instacia o usuario e chama a funcao criar user da classe users
-        object_user = users(email, password, admin=admin)
-        object_user.create_user(usersdb, email, password)
+        object_user = Users(username=username, email=email,
+                            password=password, admin=admin)
+        object_user.create_user(usersdb, username, email, password)
 
         status = object_user.status
 
         return render_template('html/register.html',
                                status=status,
-                               password_length=len(password))
+                               password=password)
 
     return render_template('html/register.html',
                            status=status,
-                           password_length=password_length)
+                           password=password)
+
+
+@app.route('/users')
+def users():
+    user_list = usersdb.search(Query().email != '')
+    return render_template('/html/users.html', users=user_list, current_user=current_user)
+
+
+@app.route('/users/<username>')
+def user(username):
+    username = 'Eu mesmo'
+    return username
 
 
 app.run(debug=True, host='0.0.0.0', port=5000)

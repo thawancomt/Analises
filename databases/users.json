@@ -1,13 +1,15 @@
 {
     "_default": {
         "1": {
+            "username": "Thawan Henrique",
             "email": "thawancomt@gmail.com",
-            "password": "thawancomT",
+            "password": "Dez1633#",
             "admin": false
         },
-        "2": {
-            "email": "thawancomt@gmail.com2",
-            "password": "thawancomT",
+        "3": {
+            "username": "Luis doze",
+            "email": "luis21@gmail.com",
+            "password": "luisdodoce",
             "admin": true
         }
     }

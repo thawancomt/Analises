@@ -14,7 +14,7 @@ store_dict = {
 
 class StoreAnalysis():
 
-    def __init__(self, store: int, date: str):
+    def __init__(self, store: int = 0, date: str = 0):
         self.store = store
         self.date = date
 

@@ -14,10 +14,13 @@
             <form action="/register" method="POST" class="register-card">
                 <h1>Faça seu registo</h1>
                 <div class="line-input">
-                    <input type="email" name="email" class="input-card" placeholder="Digite seu usuario" required>
+                    <input type="text" name="username" placeholder="Digite seu nome">
                 </div>
                 <div class="line-input">
-                    <input type="password" name="password" class="input-card" placeholder="Digite sua senha" required>
+                    <input type="email" name="email" class="input-card" placeholder="Seu email" required>
+                </div>
+                <div class="line-input">
+                    <input type="password" name="password" class="input-card" placeholder="Defina uma senha" required>
                 </div>
 
                 <div class="check-box">
@@ -35,7 +38,7 @@
                     <a href="login">This User already exist, click here to login</a>
                 {% endif %}
 
-                {% if (password_length  <= 7) and not (password_length == 0) %}
+                {% if (password|length <= 7) and not ( password|length == 0) %}
                     <a href="register">Password length too short</a>
                 
                 {% endif %}

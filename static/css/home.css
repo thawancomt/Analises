@@ -1,0 +1,19 @@
+.home {
+    background-color: brown;
+    width: 300px;
+    height: 400px;
+    text-align: center;
+}
+
+.faturamento {
+    width: 180pxpx;
+    height: 200px;
+}
+
+.card {
+    background-color: bisque;
+
+    display: flex;
+    flex-direction: row;
+    
+}

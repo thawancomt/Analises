@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/home.css">
 </head>
 <body>
-    <h1>Bem vindos</h1>
-    <input type="text">
+    <div class="card">
+        <div class="home">
+            <h1>Bem vindo</h1>
+            <span>{{current_user}}</span>
+            <h2></h2>
+        </div>
+        <div>
+            <a href="faturamento">
+                <img src="/static/content/momney.png" alt="" class="faturamento">
+            </a>
+           
+        </div>
+    
+        <div class="home2">
+            <a href="login">
+                <img src="/static/content/chart.png" alt="" class="faturamento">
+            </a>
+            
+        </div>
+
+        <div>
+            <a href="users">
+                <img src="/static/content/user.png" alt="" class="faturamento">
+            </a>
+        </div>
+        <div>
+            <a href="register">
+                <img src="/static/content/adduser.jpg" alt="" class="faturamento">
+            </a>
+        </div>
+    </div>
 </body>
 </html>

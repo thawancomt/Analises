@@ -1,2 +1,8 @@
 .SiteFlask
 /venv
+__pycache
+__pycache__
+__pycache__/users_manager.cpython-311.pyc
+__pycache__/functions.cpython-311.pyc
+*.pyc
+*.pyc

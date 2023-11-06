@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <link rel="stylesheet" href="/static/css/users.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-top">
+            <span class="nav-items">Mr Pizza Analises</span>
+            <a href="/homepage" class="nav-items">Homepage</a>
+            <span class="nav-items">{{current_user}}</span>
+        </div>
+    </nav>
+
+    <main class="main">
+        {% if users|length == 0 %}
+        <div>
+            <h1>Nenhum usuario cadastrado no sistema</h1>
+        </div>
+        
+        {% else %}
+        {% for user in users %}
+        <div class="users-card">
+            
+            <ul>
+                <h1>
+                    <a href="users/{{ user['username'] }}">{{user['username']}}</a>
+                </h1>
+                <li> Email: {{user['email']}}</li>
+                <li> Is Admin? = {{user['admin']}}</li>
+            </ul>
+        </div>
+        {% endfor %}
+        
+
+        {% endif %}
+    </main>
+    
+</body>
+</html>
