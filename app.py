@@ -10,6 +10,7 @@ db = TinyDB('databases/dados.json', indent=4)
 usersdb = TinyDB('databases/users.json', indent=4)
 
 
+#About session info
 session = {
     'username': '',
     'loged': False,
@@ -26,7 +27,7 @@ def update_sesion_info(username, status):
 
 @app.route('/homepage')
 def home():
-    username = ''
+   
     return render_template('html/homepage.html',
                            current_user=current_user)
 
@@ -80,6 +81,7 @@ def show_billing():
         store = int(request.form.get('stores'))
 
         try:
+            # change the name to object_store
             analisy = StoreAnalysis(store, date)
 
             store_name = analisy.define_store()
@@ -135,12 +137,13 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
 
+        # Check if the new user is admin, checking if "isAdmin" is in request form
         if 'isAdmin' in request.form:
             admin = True
         else:
             admin = False
 
-        # Instacia o usuario e chama a funcao criar user da classe users
+        # the next objetive is make register be a login required function
         object_user = Users(username=username, email=email,
                             password=password, admin=admin)
         object_user.create_user(usersdb, username, email, password)
