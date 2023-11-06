@@ -10,9 +10,18 @@ db = TinyDB('databases/dados.json', indent=4)
 usersdb = TinyDB('databases/users.json', indent=4)
 
 
-loged = False
+session = {
+    'username': '',
+    'loged': False,
+}
 
-current_user = ''
+
+def update_sesion_info(username, status):
+    global session
+    session.update({
+        'username': username,
+        'loged': status
+    })
 
 
 @app.route('/homepage')
@@ -25,7 +34,7 @@ def home():
 @app.route('/faturamento', methods=['GET', 'POST'])
 def show_billing():
 
-    if loged:
+    if session['loged']:
         pass
     else:
         return redirect('/login')
@@ -98,26 +107,19 @@ def show_billing():
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
-    global current_user
-    global loged
-    status = ''
+    global session
 
     if request.method == 'POST':
 
         email = request.form.get('email')
         pwd = request.form.get('password')
 
-        if usersdb.search(
-            (Query().email == email) &
-            (Query().password == pwd)
-        ):
-            loged = True
-            current_user = usersdb.search(Query().email == email)[
-                0]['username']
-            return redirect('faturamento')
+        object_user = Users(email=email, password=pwd, database=usersdb)
+        object_user.login()
 
-        else:
-            return redirect('users')
+        if object_user.status == 'loged':
+            update_sesion_info(object_user.username, True)
+            return redirect('homepage')
 
     return render_template('html/login.html', status=status)
 
