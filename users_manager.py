@@ -8,7 +8,7 @@ class Users():
     from flask import redirect
 
     def __init__(self,
-                 email: str,
+                 email: str = '',
                  password: str = '',
                  username: str = '',
                  status: str = '',
@@ -23,11 +23,51 @@ class Users():
         self.database = database
         self.last_login = date.today()
 
-    def check_user_exists(self):
+        def preload_user_info_by_email():
+            try:
+                base = self.database.search(Query().email == self.email)[0]
+
+                self.username = base['username']
+                self.password = base['password']
+                self.admin = base['admin']
+
+                return True
+            except:
+                return False
+        preload_user_info_by_email()
+
+        def preload_user_info_by_user():
+            try:
+                base = self.database.search(
+                    Query().username == self.username)[0]
+
+                self.email = base['email']
+                self.password = base['password']
+                self.admin = base['admin']
+
+                return True
+            except:
+                return False
+
+        if not preload_user_info_by_email():
+            preload_user_info_by_user()
+
+    def check_user_exists(self, username):
+        result = self.database.search((Query().username == username))
+
+        if result:
+            return result
+
+        else:
+            return False
+
+    def check_email_exists(self):
         result = self.database.search((Query().email == self.email))
 
         if result:
             return result
+        else:
+            return False
 
     def create_user(self):
         if not self.check_user_exists():
@@ -80,3 +120,19 @@ class Users():
 
     def logout(self):
         self.status = False
+
+    def edit_user_info(self, username):
+        if self.check_user_exists(username):
+            self.database.update({
+                'username': self.username,
+                'email': self.email,
+                'password': self.password
+            }, Query().username == username)
+
+
+if __name__ == '__main__':
+    test = Users(username='Thawan Henrique')
+    test.email = 'teste'
+
+    test.edit_user_info(test.username)
+    print(test.email)

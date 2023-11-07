@@ -1,10 +1,10 @@
 {
     "_default": {
         "1": {
-            "username": "Thawan Henrique",
-            "email": "thawancomt@gmail.com",
+            "username": "Respeito",
+            "email": "teste@gmail.comaaa",
             "password": "Dez1633#",
-            "admin": false,
+            "admin": true,
             "last_login": "2023-11-07"
         },
         "3": {
@@ -15,20 +15,21 @@
             "last_login": "2023-11-06"
         },
         "4": {
-            "username": "MEO-721900",
+            "username": "mateus",
             "email": "meo@gmail.com",
             "password": "meomeomeo",
             "admin": false
         },
         "5": {
             "username": "Leandrin Da Sensi",
-            "email": "leandro@gmail.com",
+            "email": "teste",
             "password": "Dez1633#2020",
-            "admin": true
+            "admin": true,
+            "last_login": "2023-11-07"
         },
         "6": {
-            "username": "Egito Mito",
-            "email": "egitin@gmail.com",
+            "username": "Cruzes",
+            "email": "arabia@gmail.com",
             "password": "egitorei",
             "admin": true,
             "last_login": "2023-11-07"

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{username}}</title>
+</head>
+<body>
+
+    <p>Esse é o {{username}}</p>
+
+    <form action='/users/{{username}}' method="POST">
+
+        <input type="text" name="username" value={{old_user_info.username}}>
+        <input type="email" name="email" value={{old_user_info.email}}>
+        <input type="password" name="password" value={{old_user_info.password}}>
+        <input type="submit" name="edit">
+    </form>
+    
+</body>
+</html>

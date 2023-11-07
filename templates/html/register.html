@@ -33,7 +33,7 @@
                 
             </form>
             <div class="register-report">
-                <h1>Apenas o admin pode fazer cadastros</h1>
+                
                 {% if (status == 'User created successfully') %}
                     <a href="login">User created successfully, click here to login</a>
                 {% elif (status == 'User Already exist') %}
@@ -42,6 +42,9 @@
                     <span>Verify your entrys</span>
 
                 {% endif %}
+
+                <h1>Apenas o admin pode fazer cadastros</h1>
+                <a href="homepage">Homepage</a>
 
 
             </div>

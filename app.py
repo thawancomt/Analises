@@ -167,10 +167,26 @@ def users():
     return render_template('/html/users.html', users=user_list, current_user=session['username'])
 
 
-@app.route('/users/<username>')
+@app.route('/users/<username>', methods=['GET', 'POST'])
 def user(username):
-    username = 'Eu mesmo'
-    return username
+    new_username = username
+    if request.method == 'POST':
+        new_username = request.form.get('username')
+        new_email = request.form.get('email')
+        new_password = request.form.get('password')
+
+        User = Users(username=username)
+
+        User.username = new_username
+        User.email = new_email
+        User.password = new_password
+
+        User.edit_user_info(username)
+
+        return redirect(f'/users/{User.username}')
+
+    return render_template('/html/user_profile.html', username=new_username,
+                           old_user_info=Users(username=username))
 
 
 app.run(debug=True, host='0.0.0.0', port=5000)
