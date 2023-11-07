@@ -5,7 +5,7 @@
             "email": "thawancomt@gmail.com",
             "password": "Dez1633#",
             "admin": false,
-            "last_login": "2023-11-06"
+            "last_login": "2023-11-07"
         },
         "3": {
             "username": "Luis doze",
@@ -13,6 +13,25 @@
             "password": "luisdodoce",
             "admin": true,
             "last_login": "2023-11-06"
+        },
+        "4": {
+            "username": "MEO-721900",
+            "email": "meo@gmail.com",
+            "password": "meomeomeo",
+            "admin": false
+        },
+        "5": {
+            "username": "Leandrin Da Sensi",
+            "email": "leandro@gmail.com",
+            "password": "Dez1633#2020",
+            "admin": true
+        },
+        "6": {
+            "username": "Egito Mito",
+            "email": "egitin@gmail.com",
+            "password": "egitorei",
+            "admin": true,
+            "last_login": "2023-11-07"
         }
     }
 }

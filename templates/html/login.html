@@ -22,11 +22,7 @@
                 <input type="submit" name="login" class="btn-submit" value="Entrar">
                 
                 <div class="login-report">
-                    {% if (status == 'User not found') %}
-                    <span>Usuario não encontrado<a href="register"><br>Resgiste-se aqui</a></span>
-                    {% else %}
                     <span>{{status}}</span>
-                    {% endif %}
     
                 </div>
                 

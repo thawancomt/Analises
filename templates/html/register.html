@@ -34,18 +34,15 @@
             </form>
             <div class="register-report">
                 <h1>Apenas o admin pode fazer cadastros</h1>
-                {% if (status == True) %}
+                {% if (status == 'User created successfully') %}
+                    <a href="login">User created successfully, click here to login</a>
+                {% elif (status == 'User Already exist') %}
                     <a href="login">This User already exist, click here to login</a>
+                {% elif (status == 'Verify your entrys') %}
+                    <span>Verify your entrys</span>
+
                 {% endif %}
 
-                {% if (password|length <= 7) and not ( password|length == 0) %}
-                    <a href="register">Password length too short</a>
-                
-                {% endif %}
-
-                {% if (status == False) %}
-                    <a href="login">Usuario registado com sucesso</a>
-                {% endif %}
 
             </div>
 

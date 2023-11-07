@@ -1,15 +1,13 @@
 from tinydb import TinyDB, Query
 from flask import Flask, render_template, request, redirect
 from functions import StoreAnalysis, store_dict
-from users_manager import Users
+from users_manager import Users, usersdb
 
 from datetime import datetime
 
 app = Flask(__name__)
 
 db = TinyDB('databases/dados.json', indent=4)
-
-usersdb = TinyDB('databases/users.json', indent=4)
 
 
 # About session info
@@ -116,7 +114,7 @@ def login():
         email = request.form.get('email')
         pwd = request.form.get('password')
 
-        object_user = Users(email=email, password=pwd, database=usersdb)
+        object_user = Users(email=email, password=pwd)
         object_user.login()
 
         status = object_user.status
@@ -130,6 +128,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    username = ''
     status = ''
     password = ''
 
@@ -146,12 +145,12 @@ def register():
             admin = False
 
         # the next objetive is make register be a login required function
-        object_user = Users(username=username, email=email,
-                            password=password, admin=admin)
+        object_register = Users(username=username, email=email,
+                                password=password, admin=admin)
 
-        object_user.create_user(usersdb, username, email, password)
+        object_register.create_user()
 
-        status = object_user.status
+        status = object_register.status
 
         return render_template('html/register.html',
                                status=status,
