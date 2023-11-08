@@ -28,13 +28,11 @@ class Users():
                 base = self.database.search(Query().email == self.email)[0]
 
                 self.username = base['username']
-                self.password = base['password']
                 self.admin = base['admin']
 
                 return True
             except:
                 return False
-        preload_user_info_by_email()
 
         def preload_user_info_by_user():
             try:
@@ -42,7 +40,6 @@ class Users():
                     Query().username == self.username)[0]
 
                 self.email = base['email']
-                self.password = base['password']
                 self.admin = base['admin']
 
                 return True
@@ -61,8 +58,8 @@ class Users():
         else:
             return False
 
-    def check_email_exists(self):
-        result = self.database.search((Query().email == self.email))
+    def check_email_exists(self, email):
+        result = self.database.search((Query().email == email))
 
         if result:
             return result
@@ -98,7 +95,7 @@ class Users():
                 {'last_login': self.last_login}, (Query().email == self.email))
 
         try:
-            user_data = self.check_user_exists()[0]
+            user_data = self.check_email_exists(self.email)[0]
 
             if user_data:
                 result = validate_password(user_data, self.password)
@@ -131,8 +128,5 @@ class Users():
 
 
 if __name__ == '__main__':
-    test = Users(username='Thawan Henrique')
-    test.email = 'teste'
-
-    test.edit_user_info(test.username)
-    print(test.email)
+    test = Users(email='teste')
+    print(test.check_email_exists('teste'))

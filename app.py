@@ -14,14 +14,16 @@ db = TinyDB('databases/dados.json', indent=4)
 session = {
     'username': '',
     'loged': False,
+    'admin': False,
 }
 
 
-def update_sesion_info(username, status):
+def update_sesion_info(username, status, admin):
     global session
     session.update({
         'username': username,
-        'loged': status
+        'loged': status,
+        'admin': admin
     })
 
 
@@ -109,6 +111,7 @@ def show_billing():
 def login():
     global session
     status = ''
+
     if request.method == 'POST':
 
         email = request.form.get('email')
@@ -118,9 +121,10 @@ def login():
         object_user.login()
 
         status = object_user.status
+        is_admin = object_user.admin
 
         if object_user.status == 'loged':
-            update_sesion_info(object_user.username, True)
+            update_sesion_info(object_user.username, True, is_admin)
             return redirect('homepage')
 
     return render_template('html/login.html', status=status)
@@ -171,6 +175,7 @@ def users():
 def user(username):
     new_username = username
     if request.method == 'POST':
+        if session['username']
         new_username = request.form.get('username')
         new_email = request.form.get('email')
         new_password = request.form.get('password')

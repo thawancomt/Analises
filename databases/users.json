@@ -5,7 +5,7 @@
             "email": "teste@gmail.comaaa",
             "password": "Dez1633#",
             "admin": true,
-            "last_login": "2023-11-07"
+            "last_login": "2023-11-08"
         },
         "3": {
             "username": "Luis doze",
@@ -28,9 +28,9 @@
             "last_login": "2023-11-07"
         },
         "6": {
-            "username": "Cruzes",
-            "email": "arabia@gmail.com",
-            "password": "egitorei",
+            "username": "Varzia",
+            "email": "aerobeat@gmail.com",
+            "password": "deusebom",
             "admin": true,
             "last_login": "2023-11-07"
         }
