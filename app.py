@@ -60,7 +60,7 @@ def show_billing():
             }
     """
 
-    items_usage = list = None
+    items_usage :  list = None
     """
         Receive a list of amount of usaged items
         {
@@ -175,20 +175,22 @@ def users():
 def user(username):
     new_username = username
     if request.method == 'POST':
-        if session['username']
-        new_username = request.form.get('username')
-        new_email = request.form.get('email')
-        new_password = request.form.get('password')
+        if session['admin']:
+            new_username = request.form.get('username')
+            new_email = request.form.get('email')
+            new_password = request.form.get('password')
 
-        User = Users(username=username)
+            User = Users(username=username)
 
-        User.username = new_username
-        User.email = new_email
-        User.password = new_password
+            User.username = new_username
+            User.email = new_email
+            User.password = new_password
 
-        User.edit_user_info(username)
+            User.edit_user_info(username)
 
-        return redirect(f'/users/{User.username}')
+            return redirect(f'/users/{User.username}')
+        else:
+            return 'Apenas admins podem editar'
 
     return render_template('/html/user_profile.html', username=new_username,
                            old_user_info=Users(username=username))

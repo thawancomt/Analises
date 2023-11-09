@@ -4,18 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{username}}</title>
+    <link rel="stylesheet" href="/static/css/user_profile.css">
 </head>
 <body>
-
-    <p>Esse é o {{username}}</p>
-
-    <form action='/users/{{username}}' method="POST">
-
-        <input type="text" name="username" value={{old_user_info.username}}>
-        <input type="email" name="email" value={{old_user_info.email}}>
-        <input type="password" name="password" value={{old_user_info.password}}>
-        <input type="submit" name="edit">
-    </form>
+    
+    <div class="user-card">
+        <main class="container">
+            <header class="name-header"> <p>Usuario: {{username}}</p> </header>
+            
+            <section class="form-card">
+                <form action='/users/{{username}}' method="POST" class="form">
+    
+                    <input type="text" name="username" value="{{old_user_info.username}}"  placeholder="User" required>
+                    <input type="email" name="email" value="{{old_user_info.email}}" placeholder="New Email" required>
+                    <input type="password" name="password" placeholder="New password" required>
+                    <input type="submit" name="edit" id="btn-submit">
+                </form>
+            </section>
+            
+        </main>
+    </div>
+    
+    
     
 </body>
 </html>

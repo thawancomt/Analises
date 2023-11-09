@@ -43,7 +43,7 @@ class Users():
                 self.admin = base['admin']
 
                 return True
-            except:
+            except :
                 return False
 
         if not preload_user_info_by_email():
