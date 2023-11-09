@@ -10,33 +10,45 @@ app = Flask(__name__)
 db = TinyDB('databases/dados.json', indent=4)
 
 
-# About session info
-session = {
-    'username': '',
-    'loged': False,
-    'admin': False,
-}
-
-
 def update_sesion_info(username, status, admin):
     global session
     session.update({
+        'ip': None,
         'username': username,
         'loged': status,
         'admin': admin
     })
 
 
+connected_users = {}
+
+
+def conect_user(username='guest', status=False, admin=False):
+
+    if username == 'guest':
+        try:
+            return connected_users[f'{request.remote_addr}']
+        except KeyError:
+            return 'Guest'
+    else:
+        connected_users[f'{request.remote_addr}'] = {'username': username,
+                                                     'status': status,
+                                                     'admin': admin}
+
+
 @app.route('/homepage')
 def home():
-    return render_template('html/homepage.html', current_user=session['username'])
+    conect_user()
+
+    return render_template('html/homepage.html', current_user=conect_user()['username'])
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
 def show_billing():
 
-    if session['loged']:
+    if conect_user() != 'Guest' and conect_user()['admin']:
         pass
+
     else:
         return redirect('/login')
 
@@ -60,7 +72,7 @@ def show_billing():
             }
     """
 
-    items_usage :  list = None
+    items_usage:  list = None
     """
         Receive a list of amount of usaged items
         {
@@ -124,7 +136,8 @@ def login():
         is_admin = object_user.admin
 
         if object_user.status == 'loged':
-            update_sesion_info(object_user.username, True, is_admin)
+            conect_user(username=object_user.username,
+                        status=True, admin=object_user.admin)
             return redirect('homepage')
 
     return render_template('html/login.html', status=status)
@@ -168,7 +181,7 @@ def register():
 @app.route('/users')
 def users():
     user_list = usersdb.search(Query().email != '')
-    return render_template('/html/users.html', users=user_list, current_user=session['username'])
+    return render_template('/html/users.html', users=user_list, current_user=conect_user()['username'])
 
 
 @app.route('/users/<username>', methods=['GET', 'POST'])
@@ -179,6 +192,7 @@ def user(username):
             new_username = request.form.get('username')
             new_email = request.form.get('email')
             new_password = request.form.get('password')
+            password_confirmation = request.form.get('password_confirmation')
 
             User = Users(username=username)
 
@@ -186,7 +200,11 @@ def user(username):
             User.email = new_email
             User.password = new_password
 
-            User.edit_user_info(username)
+            if str(new_password) == str(password_confirmation):
+
+                User.edit_user_info(username)
+            else:
+                return f'{new_password} -  {password_confirmation}'
 
             return redirect(f'/users/{User.username}')
         else:

@@ -43,7 +43,7 @@ class Users():
                 self.admin = base['admin']
 
                 return True
-            except :
+            except:
                 return False
 
         if not preload_user_info_by_email():
@@ -67,7 +67,7 @@ class Users():
             return False
 
     def create_user(self):
-        if not self.check_user_exists():
+        if not self.check_user_exists(self.username) or not self.check_email_exists(self.email):
 
             if self.username != '' and self.password != '' and len(self.password) > 7:
                 self.database.insert({'username': self.username,
@@ -79,7 +79,10 @@ class Users():
                 self.status = 'Verify your entrys'
 
         else:
-            self.status = 'User Already exist'
+            if self.check_user_exists(self.username):
+                self.status = 'User Already exists'
+            elif self.check_email_exists(self.email):
+                self.status = 'Email already exists'
 
     def login(self):
 

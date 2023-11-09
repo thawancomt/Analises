@@ -14,31 +14,33 @@
             <span class="nav-items">{{current_user}}</span>
         </div>
     </nav>
-
-    <main class="main">
-        {% if users|length == 0 %}
-        <div>
-            <h1>Nenhum usuario cadastrado no sistema</h1>
-        </div>
-        
-        {% else %}
-        {% for user in users %}
-        <div class="users-card">
+    <section class="container">
+        <main class="main">
+            {% if users|length == 0 %}
+            <div>
+                <h1>Nenhum usuario cadastrado no sistema</h1>
+            </div>
             
-            <ul>
-                <h1>
-                    <a href="users/{{ user['username'] }}">{{user['username']}}</a>
-                </h1>
-                <li> Email: {{user['email']}}</li>
-                <li> Is Admin? = {{user['admin']}}</li>
-                <li>last login: {{user['last_login']}}</li>
-            </ul>
-        </div>
-        {% endfor %}
-        
-
-        {% endif %}
-    </main>
+            {% else %}
+            {% for user in users %}
+            <div class="users-card">
+                
+                <ul>
+                    <h1>
+                        <a href="users/{{ user['username'] }}">{{user['username']}}</a>
+                    </h1>
+                    <li> Email: {{user['email']}}</li>
+                    <li> Is Admin? = {{user['admin']}}</li>
+                    <li>last login: {{user['last_login']}}</li>
+                </ul>
+            </div>
+            {% endfor %}
+            
+    
+            {% endif %}
+        </main>
+    </section>
+    
     
 </body>
 </html>

@@ -36,10 +36,12 @@
                 
                 {% if (status == 'User created successfully') %}
                     <a href="login">User created successfully, click here to login</a>
-                {% elif (status == 'User Already exist') %}
+                {% elif (status == 'User Already exists') %}
                     <a href="login">This User already exist, click here to login</a>
                 {% elif (status == 'Verify your entrys') %}
                     <span>Verify your entrys</span>
+                {% elif (status == 'Email already exists') %}
+                    <a href="login">This email already exist, click here to login</a>
 
                 {% endif %}
 
