@@ -61,8 +61,8 @@ body, html {
 }
 
 .login-form {
-    margin: 0px 20px;
-    width: 100%;
+    margin: 20px;
+    width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -70,21 +70,8 @@ body, html {
 
 .link-cards {
     display: flex;
-    width: 100%;
-    height: 100%;
-    font-size: 70px;
-    /* gap: 10px; */
-    align-items: center;
-    /* justify-content: center; */
-    margin: 0px 20px;
-}
-.links{
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    align-items: center;
+    width: 50%;
 }
 
 .login-card {
@@ -95,7 +82,6 @@ body, html {
     justify-content: center;
     border-radius: 12px;
     gap: 20px;
-    width: 100%;
     height: 80%;
 }
 
@@ -129,23 +115,4 @@ body, html {
     color: aliceblue;
     width: 80%;
     background-color: rgb(82, 21, 21);
-}
-
-.links>a {
-    background-color: #b2523c;
-    border-radius: 12px;
-    text-decoration: none;
-    color: aliceblue;
-    font-family: Roboto;
-    width: 60%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    /* margin: 0px 10px; */
-}
-
-.links>a:hover {
-    width: 100%;
-    transition: all 0.5s ease-in-out;
 }

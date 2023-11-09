@@ -11,7 +11,7 @@
         <div class="nav-top">
             <span class="nav-items">Mr Pizza Analises</span>
             <a href="/homepage" class="nav-items">Homepage</a>
-            <span class="nav-items">{{current_user}}</span>
+            <a href="/users/{{current_user}}">{{current_user}}</a>
         </div>
     </nav>
     <section class="container">
@@ -24,16 +24,32 @@
             {% else %}
             {% for user in users %}
             <div class="users-card">
-                
-                <ul>
+                <a href="users/{{ user['username'] }}">
+
                     <h1>
-                        <a href="users/{{ user['username'] }}">{{user['username']}}</a>
+                        {{user['username']}}
                     </h1>
-                    <li> Email: {{user['email']}}</li>
-                    <li> Is Admin? = {{user['admin']}}</li>
-                    <li>last login: {{user['last_login']}}</li>
-                </ul>
+
+                    <ul>
+                        
+                        <li>
+                            <span>Email: </span>
+                            <h3>{{user['email']}}</h3>
+                        </li> 
+                        <li>
+                            <span>Email: </span>
+                            <h3>{{user['admin']}}</h3>
+                        </li>
+                        <li>
+                            <span>last login: </span>
+                            <h3>{{user['last_login']}}</h3>
+                        </li>
+                    </ul>
+                </a>
             </div>
+
+                
+                
             {% endfor %}
             
     

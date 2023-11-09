@@ -4,38 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="card">
-        <div class="home">
-            <h1>Bem vindo</h1>
-            <span>{{current_user}}</span>
-            <h2></h2>
-        </div>
-        <div>
-            <a href="faturamento">
-                <img src="/static/content/momney.png" alt="" class="faturamento">
-            </a>
-           
-        </div>
-    
-        <div class="home2">
-            <a href="login">
-                <img src="/static/content/chart.png" alt="" class="faturamento">
-            </a>
+    <footer class="footer">
+        <section class="title-card">
+            <div class="user-info">
+                <img src="/static/content/mrpizza.png" alt="">
+                <h1>Mr Analises</h1>
+            </div>
             
-        </div>
 
-        <div>
-            <a href="users">
-                <img src="/static/content/user.png" alt="" class="faturamento">
-            </a>
-        </div>
-        <div>
-            <a href="register">
-                <img src="/static/content/adduser.jpg" alt="" class="faturamento">
-            </a>
-        </div>
-    </div>
+            <section class="user-info">
+                <img src="/static/content/user.png" alt="">
+                <h3>{{current_user}}</h3>
+                {% if current_user != 'guest' %}
+                    <a href="/logoff">Sair</a>
+                {% endif %}
+            </section>
+            
+        </section>
+        
+    </footer>
+
+    <section class="container">
+        <header>
+            <h1>Bem vindo</h1>
+        </header>
+        <main class="main">
+            {% if (current_user == 'guest') %}
+            <div class="login-form">
+
+                <form action="/login" method="POST" class="login-card">
+                    <h1>insira os dados para login</h1>
+                    <div class="line-input">
+                        <input type="email" name="email" class="input-card" placeholder="Digite seu usuario">
+                    </div>
+                    <div class="line-input">
+                        <input type="password" name="password" class="input-card" placeholder="Digite sua senha">
+                    </div>
+                    <input type="submit" name="login" class="btn-submit" value="Entrar">
+                    
+                    <div class="login-report">
+                        <span>{{status}}</span>
+        
+                    </div>
+                    
+                    
+                </form>
+
+            </div>
+            {% endif %}
+
+            <aside class="link-cards">
+                <div class="links">
+                    <a href="/users">Users</a>
+                    <a href="/register">register</a>
+                    <a href="/faturamento">billing</a>
+                    <a href=""></a>
+                </div>
+                
+            </aside>
+        </main>
+    </section>
+    
 </body>
 </html>

@@ -43,12 +43,19 @@ nav {
 
 .main {
 
-    width: 80%;
-   display: flex;
-   justify-content: center ;
-   flex-wrap: wrap;
-   background-color: brown;
-   border-radius: 12px;
+width: 80%;
+
+display: flex;
+
+flex-wrap: wrap;
+
+background-color: brown;
+
+border-radius: 12px;
+
+justify-content: center;
+
+flex-direction: row;
 }
 
 .container {
@@ -64,18 +71,42 @@ nav {
     border-radius: 12px;
     margin: 20px;
     padding: 12px;
-    
-
     text-align: center;
-
     display: flex;
-    
+    flex-direction: column;
+    width: 40%;
 }
 
 li {
+    color: brown;
     list-style-type: none;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .users-card a {
+    color: black;
     text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@media (max-width: 768px) {
+    *{
+        width: 100%;
+    }
+
+    .users-card {
+        font-size: small;
+        width: 47%;
+        padding: 0%;
+        margin: 5px;
+    }
+    li {
+        font-size: smaller;
+    }
+
+    .main {
+        width: 95%;
+    }
+    
 }

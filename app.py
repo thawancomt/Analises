@@ -29,7 +29,10 @@ def conect_user(username='guest', status=False, admin=False):
         try:
             return connected_users[f'{request.remote_addr}']
         except KeyError:
-            return 'Guest'
+            connected_users[f'{request.remote_addr}'] = {'username': 'guest',
+                                                         'status': status,
+                                                         'admin': admin}
+            return 'guest'
     else:
         connected_users[f'{request.remote_addr}'] = {'username': username,
                                                      'status': status,
@@ -39,7 +42,6 @@ def conect_user(username='guest', status=False, admin=False):
 @app.route('/homepage')
 def home():
     conect_user()
-
     return render_template('html/homepage.html', current_user=conect_user()['username'])
 
 
@@ -140,7 +142,15 @@ def login():
                         status=True, admin=object_user.admin)
             return redirect('homepage')
 
-    return render_template('html/login.html', status=status)
+    return render_template('html/homepage.html', current_user=conect_user()['username'])
+
+
+@app.route('/logoff')
+def log_off():
+    connected_users[f'{request.remote_addr}'] = {'username': 'guest',
+                                                 'loged': False,
+                                                 'admin': False}
+    return redirect('/homepage')
 
 
 @app.route('/register', methods=['GET', 'POST'])
