@@ -34,7 +34,7 @@
             <h1>Bem vindo</h1>
         </header>
         <main class="main">
-            {% if (current_user == 'guest') %}
+            {% if (current_user == None ) %}
             <div class="login-form">
 
                 <form action="/login" method="POST" class="login-card">
@@ -48,8 +48,9 @@
                     <input type="submit" name="login" class="btn-submit" value="Entrar">
                     
                     <div class="login-report">
-                        <span>{{status}}</span>
-        
+                        {% with messages = get_flashed_messages() %}
+                        <span> {{messages[0]}}</span>
+                        {% endwith %}
                     </div>
                     
                     

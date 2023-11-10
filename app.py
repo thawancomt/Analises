@@ -1,48 +1,26 @@
 from tinydb import TinyDB, Query
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from functions import StoreAnalysis, store_dict
 from users_manager import Users, usersdb
+from sessions import Session
 
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'thawan'
 
 db = TinyDB('databases/dados.json', indent=4)
 
 
-def update_sesion_info(username, status, admin):
-    global session
-    session.update({
-        'ip': None,
-        'username': username,
-        'loged': status,
-        'admin': admin
-    })
-
-
-connected_users = {}
-
-
-def conect_user(username='guest', status=False, admin=False):
-
-    if username == 'guest':
-        try:
-            return connected_users[f'{request.remote_addr}']
-        except KeyError:
-            connected_users[f'{request.remote_addr}'] = {'username': 'guest',
-                                                         'status': status,
-                                                         'admin': admin}
-            return 'guest'
-    else:
-        connected_users[f'{request.remote_addr}'] = {'username': username,
-                                                     'status': status,
-                                                     'admin': admin}
+@app.route('/')
+def index():
+    return redirect('/homepage')
 
 
 @app.route('/homepage')
 def home():
-    conect_user()
-    return render_template('html/homepage.html', current_user=conect_user()['username'])
+    conected_user = Session(request.remote_addr)
+    return render_template('html/homepage.html', current_user=Session(request.remote_addr).get_session())
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
@@ -123,7 +101,8 @@ def show_billing():
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
-    global session
+    conected_user = Session(request.remote_addr)
+
     status = ''
 
     if request.method == 'POST':
@@ -138,18 +117,19 @@ def login():
         is_admin = object_user.admin
 
         if object_user.status == 'loged':
-            conect_user(username=object_user.username,
-                        status=True, admin=object_user.admin)
-            return redirect('homepage')
+            conected_user.username, conected_user.admin, conected_user.loged = object_user.username, is_admin, status
+            conected_user.create_session()
 
-    return render_template('html/homepage.html', current_user=conect_user()['username'])
+            return redirect('homepage')
+        else:
+            flash(f'{object_user.status}')
+
+    return render_template('html/homepage.html', current_user=Session(request.remote_addr).get_session())
 
 
 @app.route('/logoff')
 def log_off():
-    connected_users[f'{request.remote_addr}'] = {'username': 'guest',
-                                                 'loged': False,
-                                                 'admin': False}
+    Session(request.remote_addr).logoff()
     return redirect('/homepage')
 
 
