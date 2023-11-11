@@ -23,6 +23,14 @@
                     <input type="password" name="password" class="input-card" placeholder="Defina uma senha" required>
                 </div>
 
+                <div class="line-input">
+                    <select name="store" id="">
+                        {% for store_id, store_name in store_dict.items() %}
+                        <option value="{{ store_id }}" >{{ store_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
                 <div class="check-box">
                     <label for="isAdmin">is it user Admin?</label>
                     <input type="checkbox" name="isAdmin" id="isAdmin">

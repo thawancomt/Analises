@@ -15,14 +15,25 @@
             <section class="form-card">
                 <form action='/users/{{username}}' method="POST" class="form">
 
-                    <input type="text" name="old_username" value="{{old_user_info.username}}"  readonly>
-                    <input type="text" name="username" value=""  placeholder="New username" required>
+                    <input type="text" name="old_username" value="{{old_info.username}}"  readonly>
+                    <input type="text" name="username" value=""  placeholder="New username">
 
-                    <input type="email" name="old_email" value="{{old_user_info.email}}" readonly>
-                    <input type="email" name="email" value="" placeholder="New Email" required>
+                    <input type="email" name="old_email" value="{{old_info.email}}" readonly>
+                    <input type="email" name="email" value="" placeholder="New Email">
 
-                    <input type="password" name="password" placeholder="New password" required>
-                    <input type="password" name="password_confirmation" placeholder="Confirm the password" required>
+                    
+                    <input type="password" name="password" placeholder="New password">
+                    <input type="password" name="password_confirmation" placeholder="Confirm the password">
+
+                    <select name="store" id="">
+                        {% for store_id, store_name in store_dict.items() %}
+                            {% if store_id|string == old_info.store %}
+                            <option value="{{ store_id }}" selected>{{ store_name }}</option>
+                            {% endif %}
+                            <option value="{{ store_id }}">{{ store_name }}</option>
+                        {% endfor %}
+                    </select>
+
 
                     <input type="submit" name="edit" id="btn-submit">
                 </form>

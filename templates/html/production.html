@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production</title>
+</head>
+<body>
+
+    <h1>Enter day productions {{current_user}}</h1>
+    <form action="/production" method="POST">
+        <input type="number" name="big_ball" id="">
+        <input type="number" name="small_ball" id="">
+        <input type="number" name="garlic_bread" id="">
+        <select name="store" id="">
+            {% for store_id, store_name in store_dict.items() %}
+                {% if store_id|string == store %}
+                <option value="{{ store_id }}" selected>{{ store_name }}</option>
+                {% endif %}
+            <option value="{{ store_id }}" >{{ store_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="date" name="date">
+        <input type="submit">
+        
+    </form>
+    <a href="homepage">Home</a>
+</body>
+</html>

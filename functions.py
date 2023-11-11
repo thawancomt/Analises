@@ -1,7 +1,7 @@
 """Some methods needs conection with the modules imported from main"""
 from tinydb import Query, TinyDB
 
-db = TinyDB('databases/dados.json')
+db = TinyDB('managers/databases/dados.json')
 
 store_dict = {
     3: 'Colombo',

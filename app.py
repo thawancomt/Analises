@@ -1,15 +1,21 @@
 from tinydb import TinyDB, Query
 from flask import Flask, render_template, request, redirect, flash
 from functions import StoreAnalysis, store_dict
-from users_manager import Users, usersdb
-from sessions import Session
+from managers.sessions import Session
+from managers.users_manager import Users, usersdb
+from managers.production import Production, DbConnection
+
 
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'thawan'
 
-db = TinyDB('databases/dados.json', indent=4)
+db = TinyDB('managers/databases/dados.json', indent=4)
+
+
+def get_user_data():
+    return Session(request.remote_addr).get_session()
 
 
 @app.route('/')
@@ -19,14 +25,14 @@ def index():
 
 @app.route('/homepage')
 def home():
-    conected_user = Session(request.remote_addr)
-    return render_template('html/homepage.html', current_user=Session(request.remote_addr).get_session())
+    return render_template('html/homepage.html',
+                           current_user=get_user_data()['username'])
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
 def show_billing():
 
-    if conect_user() != 'Guest' and conect_user()['admin']:
+    if Session(request.remote_addr).get_session()['admin']:
         pass
 
     else:
@@ -101,7 +107,7 @@ def show_billing():
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
-    conected_user = Session(request.remote_addr)
+    connected_user = Session(request.remote_addr)
 
     status = ''
 
@@ -116,15 +122,19 @@ def login():
         status = object_user.status
         is_admin = object_user.admin
 
-        if object_user.status == 'loged':
-            conected_user.username, conected_user.admin, conected_user.loged = object_user.username, is_admin, status
-            conected_user.create_session()
+        if status == 'loged':
+            connected_user.username = object_user.username
+            connected_user.admin = is_admin
+            connected_user.loged = True
+
+            connected_user.create_session()
 
             return redirect('homepage')
         else:
             flash(f'{object_user.status}')
 
-    return render_template('html/homepage.html', current_user=Session(request.remote_addr).get_session())
+    return render_template('html/homepage.html',
+                           current_user=connected_user.get_session()['username'])
 
 
 @app.route('/logoff')
@@ -144,6 +154,7 @@ def register():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
+        store_id = request.form.get('store')
 
         # Check if the new user is admin, checking if "isAdmin" is in request form
         if 'isAdmin' in request.form:
@@ -153,42 +164,60 @@ def register():
 
         # the next objetive is make register be a login required function
         object_register = Users(username=username, email=email,
-                                password=password, admin=admin)
+                                password=password, admin=admin,
+                                store=store_id)
 
         object_register.create_user()
 
         status = object_register.status
 
-        return render_template('html/register.html',
-                               status=status,
-                               password=password)
-
     return render_template('html/register.html',
                            status=status,
-                           password=password)
+                           password=password,
+                           store_dict=store_dict)
 
 
 @app.route('/users')
 def users():
-    user_list = usersdb.search(Query().email != '')
-    return render_template('/html/users.html', users=user_list, current_user=conect_user()['username'])
+    user_list = usersdb.search(Query().email != None)
+
+    connected_user = Session(request.remote_addr)
+
+    return render_template('/html/users.html',
+                           users=user_list,
+                           current_user=get_user_data()['username'])
 
 
 @app.route('/users/<username>', methods=['GET', 'POST'])
 def user(username):
     new_username = username
+
     if request.method == 'POST':
-        if session['admin']:
+        if Session(request.remote_addr).get_session()['admin']:
+
             new_username = request.form.get('username')
+
             new_email = request.form.get('email')
+
             new_password = request.form.get('password')
             password_confirmation = request.form.get('password_confirmation')
 
+            new_store = request.form.get('store')
+
             User = Users(username=username)
 
-            User.username = new_username
-            User.email = new_email
             User.password = new_password
+            User.store = new_store
+
+            if not new_username == '':
+                User.username = new_username
+            elif not new_email == '':
+                User.email = new_email
+            elif not new_store == '':
+                User.store = new_store
+            elif new_password == '' and password_confirmation == '':
+                User.password = Users.check_user_exists(
+                    username=username)[0]['password']
 
             if str(new_password) == str(password_confirmation):
 
@@ -200,8 +229,38 @@ def user(username):
         else:
             return 'Apenas admins podem editar'
 
-    return render_template('/html/user_profile.html', username=new_username,
-                           old_user_info=Users(username=username))
+    return render_template('/html/user_profile.html',
+                           username=username,
+                           old_info=Users(username=username),
+                           store_dict=store_dict
+                           )
+
+
+@app.route('/production', methods=['GET', 'POST'])
+def production():
+    if Session(request.remote_addr).get_session()['admin']:
+        if request.method == 'POST':
+
+            big_ball = request.form.get('big_ball')
+            small_ball = request.form.get('small_ball')
+            garlic_bread = request.form.get('garlic_bread')
+
+            production = Production()
+
+            production.big_balls = int(big_ball)
+            production.small_balls = int(small_ball)
+            production.garlic_bread = int(garlic_bread)
+
+            conection = DbConnection('teste.json')
+            conection.data = production.get_data()
+            conection.store = Users(username=get_user_data()['username']).store
+            conection.insert()
+    else:
+        return 'not permissive'
+
+    return render_template('/html/production.html', store_dict=store_dict,
+                           current_user=get_user_data()['username'],
+                           store=Users(username=get_user_data()['username']).store)
 
 
 app.run(debug=True, host='0.0.0.0', port=5000)

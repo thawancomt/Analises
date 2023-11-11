@@ -14,9 +14,10 @@ class Session():
 
     def get_session(self):
         if self.ip_address in self.connected_users:
-            return self.connected_users[self.ip_address]['username']
+            return self.connected_users[self.ip_address]
         else:
-            return None
+            self.create_session()
+            return self.connected_users[self.ip_address]
 
     def logoff(self):
         self.admin = False
@@ -29,8 +30,5 @@ class Session():
 
 
 if __name__ == '__main__':
-    teste = Session(12)
-    teste.username = 'teste'
-    teste.create_session()
 
-    print(Session(12).get_session())
+    pass

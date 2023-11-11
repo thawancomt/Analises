@@ -1,0 +1,20 @@
+{
+    "_default": {
+        "1": {
+            "username": "Thawan Henrique",
+            "email": "thawancomt@gmail.com",
+            "password": "Dezembro1633#",
+            "admin": true,
+            "store": "25",
+            "last_login": "2023-11-11"
+        },
+        "2": {
+            "username": "Falcao",
+            "email": "asd@gmail.com",
+            "password": "",
+            "admin": true,
+            "store": "11",
+            "last_login": "2023-11-11"
+        }
+    }
+}

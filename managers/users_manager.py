@@ -1,7 +1,7 @@
 from tinydb import Query, TinyDB
 from datetime import datetime, date
 
-usersdb = TinyDB('databases/users.json', indent=4)
+usersdb = TinyDB('managers/databases/users.json', indent=4)
 
 
 class Users():
@@ -13,6 +13,7 @@ class Users():
                  username: str = '',
                  status: str = '',
                  admin: bool = False,
+                 store: int = 0,
                  database: TinyDB = usersdb):
 
         self.username = username
@@ -22,6 +23,7 @@ class Users():
         self.admin = admin
         self.database = database
         self.last_login = date.today()
+        self.store = store
 
         def preload_user_info_by_email():
             try:
@@ -29,6 +31,7 @@ class Users():
 
                 self.username = base['username']
                 self.admin = base['admin']
+                self.store = base['store']
 
                 return True
             except:
@@ -41,6 +44,7 @@ class Users():
 
                 self.email = base['email']
                 self.admin = base['admin']
+                self.store = base['store']
 
                 return True
             except:
@@ -73,7 +77,8 @@ class Users():
                 self.database.insert({'username': self.username,
                                       'email': self.email,
                                       'password': self.password,
-                                      'admin': self.admin})
+                                      'admin': self.admin,
+                                      'store': self.store})
                 self.status = 'User created successfully'
             else:
                 self.status = 'Verify your entrys'
@@ -126,10 +131,6 @@ class Users():
             self.database.update({
                 'username': self.username,
                 'email': self.email,
-                'password': self.password
+                'password': self.password,
+                'store': self.store
             }, Query().username == username)
-
-
-if __name__ == '__main__':
-    test = Users(email='teste')
-    print(test.check_email_exists('teste'))
