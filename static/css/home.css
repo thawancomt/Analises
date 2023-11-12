@@ -12,7 +12,7 @@ body, html {
     background-color: rgb(45, 45, 45);
 }
 
-.footer {
+.header {
     background-color: #b2523c;
     height: 50px;
     margin: 0px 10px;
@@ -44,6 +44,14 @@ body, html {
     border-radius: 50%;
 }
 
+.user-info a {
+    text-decoration: none;
+}
+.user-info h1:hover {
+    color: #3f1b13;
+    transition: all 1s ease-in-out;
+}
+
 .container {
     background-color: #3f1b13;
     height: 80%;
@@ -52,8 +60,6 @@ body, html {
     border-radius: 12px;
     flex-direction: column;
     text-align: center;
-
-    backdrop-filter: blur(0px);
 }
 
 
@@ -152,4 +158,28 @@ body, html {
 .links>a:hover {
     width: 100%;
     transition: all 0.5s ease-in-out;
+}
+
+.production-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-input {
+    color: aliceblue;
+    height: 30px;
+    
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.form-input input {
+    color: #b2523c;
+    width: 50px;
 }

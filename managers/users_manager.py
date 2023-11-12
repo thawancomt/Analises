@@ -134,3 +134,9 @@ class Users():
                 'password': self.password,
                 'store': self.store
             }, Query().username == username)
+
+
+t = Users(username='Thawan Henrique')
+
+
+print()

@@ -4,17 +4,17 @@
             "username": "Thawan Henrique",
             "email": "thawancomt@gmail.com",
             "password": "Dezembro1633#",
-            "admin": true,
-            "store": "25",
-            "last_login": "2023-11-11"
+            "admin": false,
+            "store": "3",
+            "last_login": "2023-11-12"
         },
         "2": {
             "username": "Falcao",
             "email": "asd@gmail.com",
-            "password": "",
+            "password": "Dez1633#",
             "admin": true,
-            "store": "11",
-            "last_login": "2023-11-11"
+            "store": "25",
+            "last_login": "2023-11-12"
         }
     }
 }

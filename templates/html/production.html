@@ -4,26 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Production</title>
+    <link rel="stylesheet" href="/static/css/home.css">
 </head>
 <body>
+    <header class="header">
+        <section class="title-card">
+            <div class="user-info">
+                <img src="/static/content/mrpizza.png" alt="">
+                <a href="/homepage">
+                    <h1>Mr Analises</h1>
+                </a>
+            </div>
+            
 
-    <h1>Enter day productions {{current_user}}</h1>
-    <form action="/production" method="POST">
-        <input type="number" name="big_ball" id="">
-        <input type="number" name="small_ball" id="">
-        <input type="number" name="garlic_bread" id="">
-        <select name="store" id="">
-            {% for store_id, store_name in store_dict.items() %}
-                {% if store_id|string == store %}
-                <option value="{{ store_id }}" selected>{{ store_name }}</option>
+            <section class="user-info">
+                <img src="/static/content/user.png" alt="">
+                <h3>{{current_user}}</h3>
+                {% if current_user != 'guest' %}
+                    <a href="/logoff">Sair</a>
                 {% endif %}
-            <option value="{{ store_id }}" >{{ store_name }}</option>
-            {% endfor %}
-        </select>
-        <input type="date" name="date">
-        <input type="submit">
+            </section>
+            
+        </section>
         
-    </form>
-    <a href="homepage">Home</a>
+    </header>
+    <section>
+        <main class="container">
+            <header>
+                <h1>{{store_dict[store|int]}}</h1>
+            </header>
+
+            <div class="production-main">
+                <form action="/production" method="POST" class="form">
+                    {% for article in articles %}
+                    <div class="form-input">
+                        <div>
+                            <label for="{{article}}">{{article}}</label>
+                            <input type="number" name="{{article}}">
+                        </div>
+                        <div>
+                            <input type="number" value="{{produced[article]}}">
+                        </div>
+                        
+                    </div>
+                    
+                    {% endfor %}
+                    <select name="store" id="">
+                        {% for store_id, store_name in store_dict.items() %}
+                            {% if store_id|string == user_store %}
+                                <option value="{{ store_id }}" selected>{{ store_name }}</option>
+                            {% else %}
+                                {% if is_admin == true %}
+                                    <option value="{{ store_id }}" >{{ store_name }}</option>
+                                {% else %}
+                                    <option value="{{ store_id }}" disabled>{{ store_name }}</option>
+                                {% endif %}
+                            {% endif %}
+                        
+                        {% endfor %}
+                    </select>
+                    <input type="date" name="date">
+                    <input type="submit">
+                    
+                </form>
+            </div>
+            
+            
+            <a href="/homepage">Home</a>
+
+        </main>
+    </section>
+    
 </body>
 </html>

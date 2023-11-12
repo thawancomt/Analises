@@ -1,6 +1,14 @@
 from tinydb import TinyDB, Query
 from datetime import date
 
+store_dict = {
+    3: 'Colombo',
+    5: 'Odivelas',
+    11: 'Campo de Ourique',
+    13: 'Coina',
+    25: 'Baixa Chiado'
+}
+
 
 class Production():
     def __init__(self):
@@ -9,11 +17,13 @@ class Production():
         self.small_balls: int = 0
         self.garlic_bread: int = 0
         self.date = str(date.today())
+        self.articles = ['big_balls', 'small_balls', 'garlic_bread']
 
     def get_data(self):
-        return {self.date:   {'big_balls': int(self.big_balls),
-                              'small_balls': int(self.small_balls),
-                              'garlic_bread': int(self.garlic_bread)}}
+        return {'date': self.date,
+                'big_balls': int(self.big_balls),
+                'small_balls': int(self.small_balls),
+                'garlic_bread': int(self.garlic_bread)}
 
 
 class DbConnection():
@@ -23,8 +33,24 @@ class DbConnection():
         self.store = int
 
     def insert(self):
-        self.db.table(self.store).insert(self.data)
+        self.db.table(store_dict[self.store]).insert(self.data)
 
     def update(self, date):
         self.db.table(self.store).update(
             self.data, Query().date == date)
+
+    def get_data(self, date=None):
+        store = int(self.store)
+        data = self.db.table(store_dict[store])
+        if data:
+            return data.search(Query().date == date)
+        else:
+            return [{'big_balls': 0, 'small_balls': 0, 'garlic_bread': 0}]
+
+
+teste = DbConnection('teste.json')
+
+
+teste.store = 25
+
+print(teste.get_data('2023-11-12'))

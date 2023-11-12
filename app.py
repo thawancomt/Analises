@@ -4,6 +4,7 @@ from functions import StoreAnalysis, store_dict
 from managers.sessions import Session
 from managers.users_manager import Users, usersdb
 from managers.production import Production, DbConnection
+from datetime import date as dt
 
 
 from datetime import datetime
@@ -39,35 +40,10 @@ def show_billing():
         return redirect('/login')
 
     billing: list = None
-    """
-        Receive a list of amount of billing
-            {   
-                0 : money
-                1 : card
-                2 : total
-            }
-    """
 
     items_production: list = None
-    """
-        Receive a list of products amounts
-            {
-                0 : garlic bread
-                1 : small_ball
-                2 : big_ball
-            }
-    """
 
     items_usage:  list = None
-    """
-        Receive a list of amount of usaged items
-        {
-            0: garlic bread
-            1: small_ball
-            2: big_ball
-            3: chessse
-        }
-    """
 
     store_name = None
 
@@ -205,8 +181,6 @@ def user(username):
             new_store = request.form.get('store')
 
             User = Users(username=username)
-
-            User.password = new_password
             User.store = new_store
 
             if not new_username == '':
@@ -215,17 +189,16 @@ def user(username):
                 User.email = new_email
             elif not new_store == '':
                 User.store = new_store
-            elif new_password == '' and password_confirmation == '':
-                User.password = Users.check_user_exists(
+
+            if new_password == '' and password_confirmation == '':
+                User.password = Users().check_user_exists(
                     username=username)[0]['password']
-
-            if str(new_password) == str(password_confirmation):
-
-                User.edit_user_info(username)
             else:
-                return f'{new_password} -  {password_confirmation}'
+                User.password = password_confirmation
 
-            return redirect(f'/users/{User.username}')
+            if new_password == password_confirmation:
+                User.edit_user_info(username)
+
         else:
             return 'Apenas admins podem editar'
 
@@ -237,30 +210,59 @@ def user(username):
 
 
 @app.route('/production', methods=['GET', 'POST'])
-def production():
-    if Session(request.remote_addr).get_session()['admin']:
-        if request.method == 'POST':
+def enter_production():
 
-            big_ball = request.form.get('big_ball')
-            small_ball = request.form.get('small_ball')
-            garlic_bread = request.form.get('garlic_bread')
+    conection = DbConnection('teste.json')
 
-            production = Production()
+    conection.store = int(Users(username=get_user_data()['username']).store)
 
-            production.big_balls = int(big_ball)
-            production.small_balls = int(small_ball)
-            production.garlic_bread = int(garlic_bread)
+    date = 0
 
-            conection = DbConnection('teste.json')
-            conection.data = production.get_data()
-            conection.store = Users(username=get_user_data()['username']).store
-            conection.insert()
+    production = Production()
+
+    if request.method == 'POST':
+
+        big_ball = request.form.get('big_balls')
+        small_ball = request.form.get('small_balls')
+        garlic_bread = request.form.get('garlic_bread')
+        date = request.form.get('date')
+        store = request.form.get('store')
+        conection.store = int(store)
+
+        production = Production()
+
+        production.big_balls = int(big_ball)
+        production.small_balls = int(small_ball)
+        production.garlic_bread = int(garlic_bread)
+        production.date = date
+        conection.data = production.get_data()
+        conection.insert()
+
+    return redirect(f'/production/{conection.store}/{dt.today()}')
+
+
+@app.route('/production/<store>/<date>', methods=['GET', 'POST'])
+def production_view(date, store):
+    is_admin = get_user_data()['admin']
+
+    if get_user_data()['username'] != None:
+
+        connection = DbConnection('teste.json')
+        connection.store = store
+        data = connection.get_data(date)[0]
+
+        user_store = Users(username=get_user_data()['username']).store
+
+        return render_template('/html/production.html',
+                               store_dict=store_dict,
+                               articles=Production().articles,
+                               produced=data,
+                               user_store=user_store,
+                               store=store,
+                               current_user=get_user_data()['username'],
+                               is_admin=is_admin)
     else:
-        return 'not permissive'
-
-    return render_template('/html/production.html', store_dict=store_dict,
-                           current_user=get_user_data()['username'],
-                           store=Users(username=get_user_data()['username']).store)
+        return redirect('/homepage')
 
 
 app.run(debug=True, host='0.0.0.0', port=5000)

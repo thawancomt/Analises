@@ -22,15 +22,17 @@
                     <input type="email" name="email" value="" placeholder="New Email">
 
                     
-                    <input type="password" name="password" placeholder="New password">
-                    <input type="password" name="password_confirmation" placeholder="Confirm the password">
+                    <input type="password" name="password" value="" placeholder="New password">
+                    <input type="password" name="password_confirmation" value="" placeholder="Confirm the password">
 
                     <select name="store" id="">
                         {% for store_id, store_name in store_dict.items() %}
                             {% if store_id|string == old_info.store %}
                             <option value="{{ store_id }}" selected>{{ store_name }}</option>
-                            {% endif %}
+                            {% else %}
                             <option value="{{ store_id }}">{{ store_name }}</option>
+                            {% endif %}
+                            
                         {% endfor %}
                     </select>
 
