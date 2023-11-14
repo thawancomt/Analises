@@ -40,17 +40,20 @@ class DbConnection():
             self.data, Query().date == date)
 
     def get_data(self, date=None):
-        store = int(self.store)
-        data = self.db.table(store_dict[store])
-        if data:
-            return data.search(Query().date == date)
-        else:
+        try:
+            store = int(self.store)
+            data = self.db.table(store_dict[store])
+            search_result = data.search(Query().date == date)
+
+            if not search_result:
+                raise IndexError
+            else:
+                return search_result
+
+        except IndexError:
             return [{'big_balls': 0, 'small_balls': 0, 'garlic_bread': 0}]
 
 
 teste = DbConnection('teste.json')
-
-
-teste.store = 25
-
-print(teste.get_data('2023-11-12'))
+teste.store = 3
+print(teste.get_data('2023-11-13'))

@@ -26,12 +26,25 @@ def index():
 
 @app.route('/homepage')
 def home():
+
+    connected_user = Users(username=get_user_data()['username'])
+    if not Session(request.remote_addr).get_session()['loged']:
+        return redirect('/login')
+
     return render_template('html/homepage.html',
-                           current_user=get_user_data()['username'])
+                           current_user=get_user_data()['username'],
+                           isadmin=get_user_data()['admin'],
+                           store=store_dict[int(connected_user.store)],
+                           last_login=connected_user.last_login)
+
+
+# @app.route('/homepage/faturamento')
+# def show_billing():
+#     return render_template('/html/faturamento.html')
 
 
 @app.route('/faturamento', methods=['GET', 'POST'])
-def show_billing():
+def billing():
 
     if Session(request.remote_addr).get_session()['admin']:
         pass
@@ -72,13 +85,11 @@ def show_billing():
 
             total = 'Valor nao encontrado no banco de dados'
 
-    return render_template('html/faturamento.html',
-                           store=store_name,
-                           billing=billing,
-                           production=items_production,
-                           usage_balls=items_usage,
-                           usage_chart=data_to_chart,
-                           store_dict=store_dict)
+    return {'store_name': store_name,
+            'items_production': items_production,
+            'items_usage': items_usage,
+            'billing': billing,
+            'data_to_chart': data_to_chart}
 
 
 @app.route('/login',  methods=['GET', 'POST'])
@@ -109,8 +120,13 @@ def login():
         else:
             flash(f'{object_user.status}')
 
-    return render_template('html/homepage.html',
+    return render_template('html/login.html',
                            current_user=connected_user.get_session()['username'])
+
+
+def check_loged():
+    if not Session(request.remote_addr).get_session()['loged']:
+        return redirect('/login')
 
 
 @app.route('/logoff')
@@ -121,6 +137,7 @@ def log_off():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
     username = ''
     status = ''
     password = ''
@@ -146,7 +163,7 @@ def register():
         object_register.create_user()
 
         status = object_register.status
-
+    check_loged()
     return render_template('html/register.html',
                            status=status,
                            password=password,
@@ -249,7 +266,7 @@ def production_view(date, store):
 
         connection = DbConnection('teste.json')
         connection.store = store
-        data = connection.get_data(date)[0]
+        data = connection.get_data(date=date)[0]
 
         user_store = Users(username=get_user_data()['username']).store
 

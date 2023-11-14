@@ -1,75 +1,143 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/home.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/output.css">
 </head>
-<body>
-    <header class="header">
-        <section class="title-card">
-            <div class="user-info">
-                <img src="/static/content/mrpizza.png" alt="">
-                <h1>Mr Analises</h1>
-            </div>
-            
-
-            <section class="user-info">
-                <img src="/static/content/user.png" alt="">
-                <h3>{{current_user}}</h3>
-                {% if current_user != 'guest' %}
-                    <a href="/logoff">Sair</a>
-                {% endif %}
-            </section>
-            
-        </section>
-        
-    </header>
-
-    <section class="container">
-        <header>
-            <h1>Bem vindo</h1>
-        </header>
-        <main class="main">
-            {% if (current_user == None ) %}
-            <div class="login-form">
-
-                <form action="/login" method="POST" class="login-card">
-                    <h1>insira os dados para login</h1>
-                    <div class="line-input">
-                        <input type="email" name="email" class="input-card" placeholder="Digite seu usuario">
+<body class="dark:bg-slate-900 bg-gray-300 h-full w-full p-1">
+    <div class="group grid grid-cols-9 grid-rows-9 h-full ">
+        <!-- SideBar -->
+        <div class="grid grid-cols-1 grid-rows-6 shadow-lg shadow-red-950 bg-gray-600 col-span-2 row-span-3 rounded">
+            <div class="flex justify-center items-center space-x-2  rounded-lg bg-gray-500
+                        ">
+                <img src="/static/content/user.png" alt="" class="sm:w-14 sm:h-14 sm:border sm:border-white rounded-lg
+                        w-0 h-0">
+                <div class="flex flex-col justify-center ">
+                    <h1 class="font-bold text-lg text-white">{{current_user}}</h1>
+                    {% if isadmin == True %}
+                        <span class="font-semibold text-sm">Administrator</span>
+                    {% else %}
+                        <span class="font-semibold text-sm">Colaborator</span>
+                    {% endif %}
+                    <div class="">
+                        <h1 class="text-sm text-left font-semibold">Last login: {{last_login}}</h1>
                     </div>
-                    <div class="line-input">
-                        <input type="password" name="password" class="input-card" placeholder="Digite sua senha">
-                    </div>
-                    <input type="submit" name="login" class="btn-submit" value="Entrar">
-                    
-                    <div class="login-report">
-                        {% with messages = get_flashed_messages() %}
-                        <span> {{messages[0]}}</span>
-                        {% endwith %}
-                    </div>
-                    
-                    
-                </form>
-
-            </div>
-            {% endif %}
-
-            <aside class="link-cards">
-                <div class="links">
-                    <a href="/users">Users</a>
-                    <a href="/register">register</a>
-                    <a href="/faturamento">billing</a>
-                    <a href=""></a>
                 </div>
                 
-            </aside>
-        </main>
-    </section>
+            </div>
+            <div class="flex">
+                <a href="/faturamento" class="text-white 
+                        bg-orange-400 mt-2
+                        hover:bg-gray-900
+                        m-1
+                        flex
+                        text-center
+                        items-center
+                        justify-center
+                        focus:outline-none
+                        focus:ring-4
+                        focus:ring-gray-300
+                        font-medium rounded-lg text-sm
+                        dark:bg-gray-800 
+                        dark:hover:bg-gray-70
+                        0 dark:focus:ring-gray-700
+                        dark:border-gray-700 
+                        w-full
+                        shadow-xl shadow-black/20"> Billing</a>
+            </div>
+            <div class="flex w-full">
+                <a href="/production" class="text-white 
+                        bg-orange-400 mt-2
+                        hover:bg-gray-900
+                        m-1
+                        flex
+                        text-center
+                        items-center
+                        justify-center
+                        focus:outline-none
+                        focus:ring-4
+                        focus:ring-gray-300
+                        font-medium rounded-lg text-sm
+                        dark:bg-gray-800 
+                        dark:hover:bg-gray-70
+                        0 dark:focus:ring-gray-700
+                        dark:border-gray-700 
+                        w-full
+                        shadow-xl shadow-black/20">Production</a>
+            </div>
+            <div class="flex w-full">
+                <a href="/users" class="text-white 
+                        bg-orange-400 mt-2
+                        hover:bg-gray-900
+                        m-1
+                        flex
+                        text-center
+                        items-center
+                        justify-center
+                        focus:outline-none
+                        focus:ring-4
+                        focus:ring-gray-300
+                        font-medium rounded-lg text-sm
+                        dark:bg-gray-800 
+                        dark:hover:bg-gray-70
+                        0 dark:focus:ring-gray-700
+                        dark:border-gray-700 
+                        w-full
+                        shadow-xl shadow-black/20">Users</a>
+            </div>
+            <div class="flex w-full">
+                <a href="/register" class="text-white 
+                        bg-orange-400 mt-2
+                        hover:bg-gray-900
+                        m-1
+                        flex
+                        text-center
+                        items-center
+                        justify-center
+                        focus:outline-none
+                        focus:ring-4
+                        focus:ring-gray-300
+                        font-medium rounded-lg text-sm
+                        dark:bg-gray-800 
+                        dark:hover:bg-gray-70
+                        0 dark:focus:ring-gray-700
+                        dark:border-gray-700 
+                        w-full
+                        shadow-xl shadow-black/20">Register</a>
+            </div>
+            <div class="flex w-full">
+                <a href="/logoff" class="text-white 
+                        bg-orange-400 mt-2
+                        hover:bg-red-700
+                        m-1
+                        flex
+                        text-center
+                        items-center
+                        justify-center
+                        focus:outline-none
+                        focus:ring-4
+                        focus:ring-gray-300
+                        font-medium rounded-lg text-sm
+                        dark:bg-gray-800 
+                        dark:hover:bg-gray-70
+                        0 dark:focus:ring-gray-700
+                        dark:border-gray-700 
+                        w-full
+                        shadow-xl shadow-black/20
+                        transition-all ease-in-out duration-700"> Logout</a>
+            </div>
+        </div>
+        
+        <!-- Content to show -->
+        <div class=" bg-gray-950 rounded col-span-7 row-span-3 ml-1">
+            {% extends "/html/faturamento.html" %}
+        </div>
+
+        
+    </div>
+    
     
 </body>
 </html>

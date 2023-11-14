@@ -6,7 +6,7 @@
             "password": "Dezembro1633#",
             "admin": false,
             "store": "3",
-            "last_login": "2023-11-12"
+            "last_login": "2023-11-14"
         },
         "2": {
             "username": "Falcao",
@@ -15,6 +15,14 @@
             "admin": true,
             "store": "25",
             "last_login": "2023-11-12"
+        },
+        "3": {
+            "username": "Henrique",
+            "email": "gekyumethawan@gmail.com",
+            "password": "Dez1633#",
+            "admin": true,
+            "store": "25",
+            "last_login": "2023-11-14"
         }
     }
 }

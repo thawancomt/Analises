@@ -9,12 +9,6 @@
 </head>
 <body>
 
-    <footer>
-        <div id="title-page">
-            <h1> Analise {{store}}</h1>
-        </div>
-    </footer>
-
     <div class="info-card " style="gap: 10px;">
         
         <a href="#faturamento">faturamento</a>
@@ -30,17 +24,17 @@
         <div class="billing-info">
             <div class="billing-cards">
                 <span> Money: </span>
-                <h3>{{billing['MONEY']}}</h3>
+                <h3></h3>
             </div>
             <div class="billing-cards">
                 <span>Card: </span>
-                <h3>{{billing['CARD']}}</h3>
+                <h3></h3>
             </div>
     </div>
 
     <main class="billing-total">
         <span>Total: </span>
-        <h1 id="total-value">{{billing['TOTAL']}}</h1>  
+        <h1 id="total-value"></h1>  
     </main>
 
     <div class="fomr-data">
@@ -51,13 +45,7 @@
         </div>
 
         <div>
-            <label for="stores">Qual loja:</label>
-            <select name="stores" id="stores">
-                {% for store_id, store_name in store_dict.items() %}
-                <option value="{{ store_id }}">{{ store_name }}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="Enviar" id="btn-submit">
+            
         </div>
     </form>
 </div>
@@ -67,7 +55,7 @@
 
     <div class="ball-dashboard" id="producao">
         <div class="production-title">
-            <h1 >Producão {{store}}</h1>
+            <h1 >Producão </h1>
         </div>
         
         <div class="production-card">
@@ -76,24 +64,24 @@
             <div class="production-cards">
                 <div class="info-card">
                     <span>Pão de Alho:</span>
-                    <h1>{{ production['GARLIC_BREAD'] }}</h1>
+                    <h1></h1>
                 </div>
                 
                 <div class="info-card">
                     <span>Bola Pequena:</span>
-                    <h1>{{ production['SMALL_BALL'] }}</h1>
+                    <h1></h1>
                 </div>
             </div>
 
         </div>
         <div class="big-ball-production">
             <span>Bola Grande:</span>
-            <h1>{{ production['BIG_BALL'] }}</h1>
+            <h1></h1>
         </div> 
     </div>
     
     <footer class="usage-title">
-        <span>Uso de Bolas: {{store}}</span>
+        <span>Uso de Bolas:</span>
     </footer>
     <div class="ball-usage-dashboard" id="usage">
 
@@ -102,12 +90,12 @@
             <div class="usage-card">
                 <div class="usage-cards">
                     <span>Bola Pequena: </span>
-                    <h2>{{usage_balls['SMALL_BALL']}}</h2>
+                    <h2></h2>
                 </div>
 
                 <div class="usage-cards">
                     <span>Pao de Alho: </span>
-                    <h2>{{usage_balls['GARLIC_BREAD']}}</h2>
+                    <h2></h2>
                 </div>
                 
             </div>
@@ -119,7 +107,7 @@
                     
                 </div>
                 <div class="big-ball-card">
-                    <h1">{{usage_balls['BIG_BALL']}}</h1>
+                    <h1"></h1>
                 </div>
                 
             </main>
@@ -134,11 +122,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         
         
-        <script>
-            /* Aqui criei uma variavel no js para passar minha lista de valores para o grafico*/
-            var labels = {{ usage_chart | tojson }};
-        </script>
-        <script src="static/js/graphics.js"></script>
+        
     </div>
     
 </body>

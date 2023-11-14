@@ -31,4 +31,9 @@ class Session():
 
 if __name__ == '__main__':
 
-    pass
+    t = Session(2)
+    t.admin = True
+    t.username = 'admin'
+    t.loged = True
+    t.create_session()
+    print(Session(2).get_session()['loged'])
